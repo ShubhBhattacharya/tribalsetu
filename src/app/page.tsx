@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -26,6 +26,8 @@ import {
   HelpCircle,
   ExternalLink
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
+import { ALL_INDIAN_LANGUAGES } from "@/lib/chatbotKnowledge";
 
 const HERO_SLIDES = [
   {
@@ -100,10 +102,10 @@ const INDIAN_LANGUAGES = [
 ];
 
 export default function HomePage() {
+  const { language, setLanguage, t } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
   const [selectedNewsCategory, setSelectedNewsCategory] = useState("all");
   const [isLangModalOpen, setIsLangModalOpen] = useState(false);
-  const [selectedLang, setSelectedLang] = useState("हिन्दी");
 
   // Auto carousel rotation
   useEffect(() => {
@@ -214,10 +216,10 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
         <div className="text-center max-w-2xl mx-auto space-y-1.5">
           <span className="inline-block px-3 py-1 bg-emerald-50 border border-emerald-300 text-emerald-800 rounded-full text-xs font-extrabold tracking-wide">
-            ✨ डिजिटल जनजातीय सेवाएं (Digital MoTA Services)
+            ✨ {t('chooseRoleTitle')}
           </span>
           <h2 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight">
-            अपनी भूमिका चुनें (Select Service Portal)
+            {t('chooseRoleTitle')}
           </h2>
           <p className="text-xs text-slate-500">
             Dedicated role-based portals for students, scrutiny officers, and ministry administrators
@@ -237,7 +239,7 @@ export default function HomePage() {
               </div>
               <div>
                 <h3 className="text-base font-extrabold text-slate-900 group-hover:text-emerald-700 transition-colors">
-                  छात्र / शोधार्थी (Scholar)
+                  {t('roleStudentTitle')}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">
                   छात्रवृत्ति आवेदन, लाइव स्टेटस ट्रैकर, ओसीआर दस्तावेज अपलोड व त्रुटि निवारण।
@@ -245,7 +247,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-emerald-700">
-              <span>Enter Student Portal</span>
+              <span>{t('loginCta')}</span>
               <span className="text-lg group-hover:translate-x-1 transition-transform">›</span>
             </div>
           </Link>
@@ -261,39 +263,39 @@ export default function HomePage() {
               </div>
               <div>
                 <h3 className="text-base font-extrabold text-slate-900 group-hover:text-amber-700 transition-colors">
-                  संवीक्षा अधिकारी (Officer)
+                  {t('roleOfficerTitle')}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  स्प्लिट-स्क्रीन ओसीआर दस्तावेज़ जांच, राजस्व मुहर मिलान व त्वरित आपत्ति दर्ज।
+                  डिजिटल प्रमाण-पत्र सत्यापन, एआई बाउंडिंग बॉक्स क्रॉस-चेक एवं आपत्ति निवारण।
                 </p>
               </div>
             </div>
             <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-amber-700">
-              <span>Desk Workbench</span>
+              <span>{t('loginCta')}</span>
               <span className="text-lg group-hover:translate-x-1 transition-transform">›</span>
             </div>
           </Link>
 
-          {/* Card 3: Ministry Administrator */}
+          {/* Card 3: MoTA Secretariat Admin */}
           <Link
             href="/admin/login"
-            className="group p-5 bg-white rounded-2xl border-2 border-slate-200/80 hover:border-purple-500 hover:shadow-xl transition-all duration-200 flex flex-col justify-between"
+            className="group p-5 bg-white rounded-2xl border-2 border-slate-200/80 hover:border-blue-500 hover:shadow-xl transition-all duration-200 flex flex-col justify-between"
           >
             <div className="space-y-3">
-              <div className="w-12 h-12 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center text-xl font-bold border border-purple-200 group-hover:scale-110 transition-transform">
-                🏛️
+              <div className="w-12 h-12 rounded-xl bg-blue-50 text-blue-700 flex items-center justify-center text-xl font-bold border border-blue-200 group-hover:scale-110 transition-transform">
+                ⚙️
               </div>
               <div>
-                <h3 className="text-base font-extrabold text-slate-900 group-hover:text-purple-700 transition-colors">
-                  मंत्रालय प्रशासक (Admin)
+                <h3 className="text-base font-extrabold text-slate-900 group-hover:text-blue-700 transition-colors">
+                  {t('roleAdminTitle')}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  डायनामिक नियम इंजन (No-code criteria), लाइव कोटा केपीआई व मेरिट सूची राजपत्र।
+                  राष्ट्रीय वित्तीय विश्लेषण, डायनामिक नियम विन्यास, मेरिट स्कोरिंग एवं राजपत्र।
                 </p>
               </div>
             </div>
-            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-purple-700">
-              <span>Command Center</span>
+            <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-700">
+              <span>{t('loginCta')}</span>
               <span className="text-lg group-hover:translate-x-1 transition-transform">›</span>
             </div>
           </Link>
@@ -467,56 +469,56 @@ export default function HomePage() {
       <button
         type="button"
         onClick={() => setIsLangModalOpen(true)}
-        className="fixed bottom-6 left-6 z-40 inline-flex items-center gap-2 bg-gradient-to-r from-emerald-800 to-[#0a2540] text-white px-4 py-2.5 rounded-full text-xs font-bold shadow-xl border border-white/30 hover:scale-105 transition-all"
+        className="fixed bottom-6 left-6 z-40 inline-flex items-center gap-2 bg-gradient-to-r from-emerald-800 to-[#0a2540] text-white px-4 py-2.5 rounded-full text-xs font-bold shadow-xl border border-white/30 hover:scale-105 transition-all cursor-pointer"
         title="Change Portal Language"
       >
         <span className="text-sm">🌐</span>
-        <span>{selectedLang} (भाषा चुनें)</span>
+        <span>{language.nativeName} ({t('changeLanguage')})</span>
       </button>
 
       {/* Multi-Language Modal Overlay */}
       {isLangModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl shadow-2xl max-w-lg w-full border border-slate-200 p-6 space-y-4 animate-in fade-in zoom-in-95">
+          <div className="bg-white rounded-3xl shadow-2xl max-w-xl w-full border border-slate-200 p-6 space-y-4 animate-in fade-in zoom-in-95">
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div>
                 <h3 className="text-base font-black text-slate-900">
                   भाषा का चयन करें (Select Portal Language)
                 </h3>
                 <p className="text-xs text-slate-500">
-                  Multilingual accessibility under National Language Translation Mission
+                  32+ भारतीय भाषाएँ • 22 Samvidhan Bhashayein + Janjatiya Bhashayein
                 </p>
               </div>
               <button
                 onClick={() => setIsLangModalOpen(false)}
-                className="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold text-xs"
+                className="w-8 h-8 rounded-full bg-slate-100 text-slate-500 hover:bg-slate-200 flex items-center justify-center font-bold text-xs cursor-pointer"
               >
                 ✕
               </button>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5 max-h-72 overflow-y-auto p-1">
-              {INDIAN_LANGUAGES.map((lang) => (
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 max-h-80 overflow-y-auto p-1">
+              {ALL_INDIAN_LANGUAGES.map((lang) => (
                 <button
                   key={lang.code}
                   onClick={() => {
-                    setSelectedLang(lang.name);
+                    setLanguage(lang);
                     setIsLangModalOpen(false);
                   }}
-                  className={`p-3 text-left rounded-xl border transition flex flex-col justify-between ${
-                    selectedLang === lang.name
-                      ? "bg-emerald-50 border-emerald-500 text-emerald-950 font-bold shadow-2xs"
+                  className={`p-2.5 text-left rounded-xl border transition flex flex-col justify-between cursor-pointer ${
+                    language.code === lang.code
+                      ? "bg-emerald-50 border-emerald-500 text-emerald-950 font-bold shadow-xs"
                       : "bg-slate-50/70 border-slate-200 hover:bg-slate-100 text-slate-800"
                   }`}
                 >
-                  <span className="text-sm font-black">{lang.name}</span>
-                  <span className="text-[10px] text-slate-500 mt-1">{lang.sub}</span>
+                  <span className="text-xs font-black">{lang.nativeName}</span>
+                  <span className="text-[10px] text-slate-500 mt-0.5">{lang.name} • {lang.region.split('/')[0]}</span>
                 </button>
               ))}
             </div>
 
             <div className="pt-2 text-center text-[11px] text-slate-400">
-              Selected language applies to all notices, application forms, and scheme guidelines.
+              Selected language applies across the entire TribalSetu portal and virtual AI assistant.
             </div>
           </div>
         </div>

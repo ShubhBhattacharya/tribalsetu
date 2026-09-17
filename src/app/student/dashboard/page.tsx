@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -22,8 +22,10 @@ import {
 } from "lucide-react";
 import StatusStepper from "@/components/student/StatusStepper";
 import { ApplicationItem } from "@/types";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function StudentDashboard() {
+  const { t } = useLanguage();
   const [activeApplication, setActiveApplication] = useState<ApplicationItem>({
     id: "app-1",
     applicationNo: "NFST-2026-0842",
@@ -73,14 +75,14 @@ export default function StudentDashboard() {
                 </h1>
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-400/20 text-amber-300 border border-amber-400/40 backdrop-blur-xs">
                   <BadgeCheck className="w-3.5 h-3.5 text-amber-300" />
-                  Verified ST Scholar
+                  {t('verifiedScholar')}
                 </span>
               </div>
               
               <div className="flex flex-wrap items-center gap-3 text-xs text-slate-300 font-medium">
-                <span>Recognized Tribe: <strong className="text-white">Santhal</strong></span>
+                <span>{t('recognizedTribe')}: <strong className="text-white">Santhal</strong></span>
                 <span>•</span>
-                <span>State Domicile: <strong className="text-white">Jharkhand</strong></span>
+                <span>{t('stateDomicile')}: <strong className="text-white">Jharkhand</strong></span>
                 <span>•</span>
                 <span className="font-mono bg-white/10 px-2 py-0.5 rounded text-[11px] text-slate-200">
                   Aadhaar: XXXX-XXXX-8492
@@ -96,7 +98,7 @@ export default function StudentDashboard() {
               className="px-5 py-2.5 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-xl text-xs font-extrabold transition shadow-lg shadow-emerald-900/30 flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
             >
               <Sparkles className="w-4 h-4 text-emerald-200" />
-              <span>Apply for New Scheme</span>
+              <span>{t('applyNewScheme')}</span>
             </Link>
           </div>
         </div>
@@ -108,7 +110,7 @@ export default function StudentDashboard() {
               ₹
             </div>
             <div>
-              <div className="text-[11px] text-slate-300 font-medium">Monthly JRF Stipend</div>
+              <div className="text-[11px] text-slate-300 font-medium">{t('monthlyStipend')}</div>
               <div className="text-base font-black text-white">₹38,800 <span className="text-[11px] font-normal text-emerald-300">/ month + HRA</span></div>
             </div>
           </div>
@@ -118,7 +120,7 @@ export default function StudentDashboard() {
               <Landmark className="w-4 h-4" />
             </div>
             <div>
-              <div className="text-[11px] text-slate-300 font-medium">Annual Contingency Grant</div>
+              <div className="text-[11px] text-slate-300 font-medium">{t('annualContingency')}</div>
               <div className="text-base font-black text-white">₹20,500 <span className="text-[11px] font-normal text-amber-300">/ year</span></div>
             </div>
           </div>
@@ -128,7 +130,7 @@ export default function StudentDashboard() {
               <Building2 className="w-4 h-4" />
             </div>
             <div className="truncate">
-              <div className="text-[11px] text-slate-300 font-medium">Research Institution</div>
+              <div className="text-[11px] text-slate-300 font-medium">{t('researchInstitution')}</div>
               <div className="text-sm font-bold text-white truncate">JNU New Delhi (NIRF #12)</div>
             </div>
           </div>
@@ -137,39 +139,39 @@ export default function StudentDashboard() {
 
       {/* 2. High-Impact Deficiency Action Center Banner */}
       {hasDeficiency && (
-        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-50 via-amber-50/80 to-amber-100/60 border-2 border-amber-300 p-6 shadow-sm">
+        <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-amber-50 via-amber-50/90 to-amber-100/70 border-2 border-amber-400/80 p-6 sm:p-7 shadow-sm">
           <div className="flex flex-wrap items-start justify-between gap-5">
             <div className="flex items-start space-x-4">
-              <div className="w-12 h-12 rounded-2xl bg-amber-500 text-white flex items-center justify-center shrink-0 shadow-md shadow-amber-500/20 mt-0.5">
+              <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-amber-500 to-amber-600 text-white flex items-center justify-center shrink-0 shadow-md shadow-amber-500/30 mt-0.5 ring-4 ring-amber-200/60">
                 <AlertTriangle className="w-6 h-6 animate-pulse" />
               </div>
               <div className="space-y-1.5 max-w-3xl">
                 <div className="flex items-center gap-2">
-                  <h3 className="text-sm font-black text-amber-950 uppercase tracking-wide">
-                    Action Required: Document Deficiency Flagged by Scrutiny Desk
+                  <h3 className="text-sm sm:text-base font-black text-amber-950 uppercase tracking-wide">
+                    {t('deficiencyActionTitle')}
                   </h3>
-                  <span className="font-mono text-[11px] font-bold bg-amber-200/80 text-amber-900 px-2 py-0.5 rounded">
+                  <span className="font-mono text-[11px] font-bold bg-amber-200 text-amber-900 px-2 py-0.5 rounded">
                     App: {activeApplication.applicationNo}
                   </span>
                 </div>
-                <p className="text-xs text-amber-900 leading-relaxed font-medium">
-                  The MoTA Scrutiny Officer flagged an issue during Optical Document Verification: 
-                  <span className="font-bold text-slate-900 bg-amber-200/50 px-1 py-0.5 rounded ml-1">
-                    &quot;Income certificate older than 1 year - Re-upload valid PDF for current Financial Year 2026-27.&quot;
+                <p className="text-xs text-amber-950 leading-relaxed font-medium">
+                  {t('deficiencyOfficerNote')}{' '}
+                  <span className="font-bold text-slate-950 bg-amber-200/80 px-1.5 py-0.5 rounded ml-1 border border-amber-300">
+                    {t('deficiencyReasonText')}
                   </span>
                 </p>
                 <div className="text-[11px] text-amber-800 font-semibold flex items-center gap-1.5 pt-0.5">
                   <Clock className="w-3.5 h-3.5 text-amber-700" />
-                  <span>Please submit the rectified certificate to resume verification. No penalty applied.</span>
+                  <span>{t('deficiencyDeadlineNote')}</span>
                 </div>
               </div>
             </div>
 
             <Link
               href="/student/deficiencies"
-              className="px-5 py-2.5 bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white rounded-xl text-xs font-bold transition shadow-md shadow-amber-900/20 flex items-center gap-2 shrink-0 hover:scale-[1.02]"
+              className="px-6 py-3 bg-gradient-to-r from-amber-600 via-amber-700 to-amber-800 hover:from-amber-700 hover:to-amber-900 text-white rounded-xl text-xs font-black transition-all shadow-lg shadow-amber-900/25 flex items-center gap-2.5 shrink-0 hover:scale-[1.03] active:scale-[0.98] border border-amber-500/40"
             >
-              <span>Resolve & Re-Upload Now</span>
+              <span>{t('resolveButtonText')}</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -229,10 +231,10 @@ export default function StudentDashboard() {
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <span className="text-xs font-black text-slate-900 flex items-center gap-1.5">
                 <CreditCard className="w-4 h-4 text-emerald-600" />
-                <span>PFMS Direct DBT Account</span>
+                <span>{t('dbtTrackerTitle')}</span>
               </span>
               <span className="text-[10px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">
-                Aadhaar Linked
+                {t('aadhaarLinkedBank')}
               </span>
             </div>
 

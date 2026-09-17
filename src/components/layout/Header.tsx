@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
@@ -14,17 +14,25 @@ import {
   Award, 
   Sparkles,
   Layers,
-  CheckCircle2
+  CheckCircle2,
+  Globe,
+  Search,
+  Check
 } from "lucide-react";
 import { MOCK_USERS, DEFAULT_USER, getRoleHomeRoute } from "@/lib/auth";
 import { UserProfile, UserRole } from "@/types";
+import { useLanguage } from "@/context/LanguageContext";
+import { ALL_INDIAN_LANGUAGES } from "@/lib/chatbotKnowledge";
 
 export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
+  const { language, setLanguage, t } = useLanguage();
 
   const [currentUser, setCurrentUser] = useState<UserProfile>(DEFAULT_USER);
   const [showRoleDropdown, setShowRoleDropdown] = useState(false);
+  const [showLangDropdown, setShowLangDropdown] = useState(false);
+  const [langSearch, setLangSearch] = useState("");
   const [fontSizeLevel, setFontSizeLevel] = useState<number>(0);
   const [highContrast, setHighContrast] = useState<boolean>(false);
 
@@ -77,15 +85,76 @@ export default function Header() {
       {/* 2. Official Government of India Top Banner */}
       <div className="bg-[#0a2540] text-slate-100 text-xs py-1.5 px-4 sm:px-8 flex flex-wrap justify-between items-center gap-2 border-b border-slate-800">
         <div className="flex items-center space-x-2.5 text-[11px] sm:text-xs">
-          <span className="font-bold tracking-wide text-amber-300">भारत सरकार</span>
+          <span className="font-bold tracking-wide text-amber-300">{t('govIndia')}</span>
           <span className="text-slate-500">•</span>
           <span className="font-semibold text-slate-200">Government of India</span>
           <span className="text-slate-600 hidden sm:inline">|</span>
-          <span className="font-bold text-amber-200 hidden sm:inline">जनजातीय कार्य मंत्रालय</span>
+          <span className="font-bold text-amber-200 hidden sm:inline">{t('mota')}</span>
           <span className="text-slate-500 hidden sm:inline">•</span>
           <span className="text-slate-300 hidden md:inline">Ministry of Tribal Affairs</span>
         </div>
         <div className="flex items-center space-x-3">
+          {/* Official Language Selector Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setShowLangDropdown(!showLangDropdown)}
+              className="flex items-center gap-1.5 bg-gradient-to-r from-emerald-900 to-slate-800 hover:from-emerald-800 hover:to-slate-700 text-amber-300 px-2.5 py-1 rounded-md text-[11px] font-bold border border-emerald-500/40 transition shadow-xs"
+              title="Change Website Language / भाषा बदलें"
+            >
+              <Globe className="w-3 h-3 text-emerald-400" />
+              <span>{language.nativeName}</span>
+              <span className="text-[10px] text-slate-400">({language.name})</span>
+              <ChevronDown className="w-2.5 h-2.5 text-slate-400" />
+            </button>
+
+            {showLangDropdown && (
+              <div className="absolute right-0 top-8 z-50 w-72 max-h-80 bg-white text-slate-900 border border-slate-300 rounded-xl shadow-2xl p-2 flex flex-col">
+                <div className="text-[11px] font-bold text-slate-700 px-2 py-1 border-b border-slate-100 flex items-center justify-between">
+                  <span>पोर्टल भाषा चुनें (Select Language)</span>
+                  <span className="text-[9px] text-emerald-700 font-normal">32+ Languages</span>
+                </div>
+                <div className="relative my-2">
+                  <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
+                  <input
+                    type="text"
+                    placeholder="Search languages..."
+                    value={langSearch}
+                    onChange={(e) => setLangSearch(e.target.value)}
+                    className="w-full pl-8 pr-2 py-1 text-xs bg-slate-50 border border-slate-300 rounded-md focus:outline-none focus:border-emerald-600 text-slate-900"
+                  />
+                </div>
+                <div className="overflow-y-auto flex-1 divide-y divide-slate-100 pr-1 text-xs">
+                  {ALL_INDIAN_LANGUAGES.filter(
+                    (l) =>
+                      l.name.toLowerCase().includes(langSearch.toLowerCase()) ||
+                      l.nativeName.toLowerCase().includes(langSearch.toLowerCase())
+                  ).map((lang) => (
+                    <button
+                      key={lang.code}
+                      onClick={() => {
+                        setLanguage(lang);
+                        setShowLangDropdown(false);
+                      }}
+                      className={`w-full text-left px-2 py-1.5 rounded flex items-center justify-between transition ${
+                        language.code === lang.code
+                          ? "bg-emerald-50 text-emerald-900 font-bold"
+                          : "hover:bg-slate-50 text-slate-800"
+                      }`}
+                    >
+                      <div>
+                        <div className="font-semibold">{lang.nativeName}</div>
+                        <div className="text-[10px] text-slate-500">{lang.name}</div>
+                      </div>
+                      {language.code === lang.code && (
+                        <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
           {/* Accessibility controls */}
           <div className="flex items-center space-x-1 text-[11px] bg-slate-800/90 px-2 py-0.5 rounded-md border border-slate-700">
             <span className="text-slate-400 font-medium mr-1">Text:</span>
@@ -116,7 +185,7 @@ export default function Header() {
 
           <div className="hidden sm:flex items-center gap-1.5 text-[11px] font-semibold text-emerald-400 bg-emerald-950/60 px-2.5 py-0.5 rounded-full border border-emerald-500/30">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            <span>MoTA Optical AI Active</span>
+            <span>{t('aiActive')}</span>
           </div>
         </div>
       </div>
@@ -138,7 +207,7 @@ export default function Header() {
               </span>
             </div>
             <p className="text-[11px] text-slate-500 font-semibold tracking-wide">
-              Unified Scholarship & Fellowship Portal • MoTA
+              {t('portalSubtitle')}
             </p>
           </div>
         </Link>
@@ -155,7 +224,7 @@ export default function Header() {
                     : "text-slate-600 hover:text-slate-900 hover:bg-white"
                 }`}
               >
-                <Layers className="w-3.5 h-3.5" /> Dashboard
+                <Layers className="w-3.5 h-3.5" /> {t('navDashboard')}
               </Link>
               <Link
                 href="/student/apply"
@@ -165,7 +234,7 @@ export default function Header() {
                     : "text-slate-600 hover:text-slate-900 hover:bg-white"
                 }`}
               >
-                <FileCheck2 className="w-3.5 h-3.5" /> Apply Fellowship
+                <FileCheck2 className="w-3.5 h-3.5" /> {t('navApply')}
               </Link>
               <Link
                 href="/student/deficiencies"
@@ -176,7 +245,7 @@ export default function Header() {
                 }`}
               >
                 <AlertCircle className="w-3.5 h-3.5 text-amber-600" /> 
-                <span>Deficiencies</span>
+                <span>{t('navDeficiencies')}</span>
                 <span className="px-1.5 py-0.2 bg-amber-500 text-white rounded-full text-[10px] font-mono font-bold">1</span>
               </Link>
             </>
@@ -192,7 +261,7 @@ export default function Header() {
                     : "text-slate-600 hover:text-slate-900 hover:bg-white"
                 }`}
               >
-                <FileCheck2 className="w-3.5 h-3.5" /> Scrutiny Workbench
+                <FileCheck2 className="w-3.5 h-3.5" /> {t('navScrutiny')}
               </Link>
               <Link
                 href="/officer/applications"
@@ -202,7 +271,7 @@ export default function Header() {
                     : "text-slate-600 hover:text-slate-900 hover:bg-white"
                 }`}
               >
-                <Layers className="w-3.5 h-3.5" /> Master Queue
+                <Layers className="w-3.5 h-3.5" /> {t('navApplications')}
               </Link>
             </>
           )}
@@ -217,7 +286,7 @@ export default function Header() {
                     : "text-slate-600 hover:text-slate-900 hover:bg-white"
                 }`}
               >
-                <BarChart3 className="w-3.5 h-3.5" /> Command Center
+                <BarChart3 className="w-3.5 h-3.5" /> {t('navAnalytics')}
               </Link>
               <Link
                 href="/admin/rules"
@@ -227,7 +296,7 @@ export default function Header() {
                     : "text-slate-600 hover:text-slate-900 hover:bg-white"
                 }`}
               >
-                <Sliders className="w-3.5 h-3.5" /> Rule Engine
+                <Sliders className="w-3.5 h-3.5" /> {t('navRules')}
               </Link>
               <Link
                 href="/admin/merit"
@@ -237,7 +306,7 @@ export default function Header() {
                     : "text-slate-600 hover:text-slate-900 hover:bg-white"
                 }`}
               >
-                <Award className="w-3.5 h-3.5" /> Merit Gazette
+                <Award className="w-3.5 h-3.5" /> {t('navMerit')}
               </Link>
             </>
           )}

@@ -15,8 +15,10 @@ import {
   ShieldCheck,
   Check
 } from "lucide-react";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function DeficiencyResolver() {
+  const { t } = useLanguage();
   const [isResolved, setIsResolved] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<string | null>(null);

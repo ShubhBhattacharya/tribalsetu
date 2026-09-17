@@ -28,6 +28,7 @@ import {
   POPULAR_QUESTIONS_BY_LANG,
   ActionLink
 } from '@/lib/chatbotKnowledge';
+import { useLanguage } from '@/context/LanguageContext';
 
 interface Message {
   id: string;
@@ -41,9 +42,9 @@ interface Message {
 }
 
 export default function TribalMitraBot() {
+  const { language: selectedLang, setLanguage: setSelectedLang } = useLanguage();
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
-  const [selectedLang, setSelectedLang] = useState<SupportedLanguage>(ALL_INDIAN_LANGUAGES[0]); // Default Hindi
   const [langSearch, setLangSearch] = useState('');
   const [isLangDropdownOpen, setIsLangDropdownOpen] = useState(false);
   const [inputQuery, setInputQuery] = useState('');
@@ -242,10 +243,11 @@ export default function TribalMitraBot() {
     <>
       {/* Floating Trigger Button */}
       {!isOpen && (
-        <div className="fixed bottom-6 right-6 z-50 flex items-center space-x-3">
-          <div className="hidden sm:flex items-center bg-[#0a2540] text-white text-xs font-semibold px-4 py-2.5 rounded-full shadow-2xl border border-emerald-500/30 backdrop-blur-md animate-bounce">
-            <span className="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-ping" />
-            <span className="text-emerald-300 font-bold mr-1">जनजातीय साथी</span> • 32+ भाषाएँ
+        <div className="fixed bottom-5 right-5 z-50 flex flex-col items-end group">
+          {/* Non-intrusive tooltip displayed above the button on hover */}
+          <div className="mb-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-[#0a2540] text-emerald-300 text-[11px] font-bold px-3 py-1 rounded-full shadow-lg border border-emerald-500/30 flex items-center space-x-1.5 pointer-events-none">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+            <span>जनजातीय साथी • {selectedLang.nativeName}</span>
           </div>
 
           <button
@@ -255,10 +257,10 @@ export default function TribalMitraBot() {
               setUnreadCount(0);
             }}
             aria-label="Open TribalMitra AI Assistant"
-            className="group relative flex items-center justify-center w-14 h-14 rounded-full bg-gradient-to-tr from-emerald-600 via-teal-700 to-[#0a2540] text-white shadow-2xl hover:scale-105 active:scale-95 transition-all duration-300 border-2 border-amber-400"
+            className="relative flex items-center justify-center w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-gradient-to-tr from-emerald-600 via-teal-700 to-[#0a2540] text-white shadow-2xl hover:scale-108 active:scale-95 transition-all duration-300 border-2 border-amber-400 cursor-pointer"
           >
             <div className="absolute inset-0 rounded-full bg-emerald-400 opacity-20 blur-md group-hover:opacity-40 transition-opacity" />
-            <Bot className="w-7 h-7 text-white group-hover:rotate-12 transition-transform" />
+            <Bot className="w-6 h-6 sm:w-7 sm:h-7 text-white group-hover:rotate-12 transition-transform" />
             {unreadCount > 0 && (
               <span className="absolute -top-1 -right-1 w-5 h-5 bg-amber-500 text-[#0a2540] font-bold text-[10px] rounded-full flex items-center justify-center border-2 border-white shadow">
                 {unreadCount}

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
 import TribalMitraBot from "@/components/chatbot/TribalMitraBot";
+import { LanguageProvider } from "@/context/LanguageContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -16,11 +17,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-emerald-200 selection:text-emerald-900">
-        <Header />
-        <main className="flex-1">{children}</main>
-        
-        {/* Official GovTech India Footer */}
-        <footer className="bg-[#06182a] text-slate-400 text-xs mt-auto border-t border-slate-800">
+        <LanguageProvider>
+          <Header />
+          <main className="flex-1 pb-28">{children}</main>
+          
+          {/* Official GovTech India Footer */}
+          <footer className="bg-[#06182a] text-slate-400 text-xs mt-auto border-t border-slate-800">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
               {/* Col 1 */}
@@ -90,7 +92,8 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
-        <TribalMitraBot />
+          <TribalMitraBot />
+        </LanguageProvider>
       </body>
     </html>
   );

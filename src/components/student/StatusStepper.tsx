@@ -1,8 +1,9 @@
-﻿"use client";
+"use client";
 
 import React from "react";
 import { CheckCircle2, Clock, AlertTriangle, ShieldCheck, ArrowRight, Sparkles } from "lucide-react";
 import { ApplicationStage, ApplicationStatus } from "@/types";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface StatusStepperProps {
   currentStage: ApplicationStage;
@@ -11,45 +12,46 @@ interface StatusStepperProps {
   deficiencyCount?: number;
 }
 
-const STAGES: { stage: ApplicationStage; label: string; office: string; desc: string }[] = [
-  { 
-    stage: "Submitted", 
-    label: "Application Submitted", 
-    office: "Citizen Portal",
-    desc: "Aadhaar e-KYC verified & digital signature logged" 
-  },
-  { 
-    stage: "OCR Verified", 
-    label: "AI Document OCR Extraction", 
-    office: "MoTA AI Engine",
-    desc: "Optical extraction & state revenue seal cross-checked" 
-  },
-  { 
-    stage: "Scrutiny", 
-    label: "MoTA Desk Scrutiny", 
-    office: "Scrutiny Desk New Delhi",
-    desc: "Verification officer review & discrepancy inspection" 
-  },
-  { 
-    stage: "Selection", 
-    label: "Merit Selection Pool", 
-    office: "National Selection Board",
-    desc: "Algorithmic composite ranking & quota reservation" 
-  },
-  { 
-    stage: "Sanctioned", 
-    label: "PFMS Grant Sanction", 
-    office: "Central Treasury / PFMS",
-    desc: "Scholarship sanction order issued & DBT credit enabled" 
-  },
-];
-
 export default function StatusStepper({
   currentStage,
   status,
   submissionDate = "12 May 2026",
   deficiencyCount = 0,
 }: StatusStepperProps) {
+  const { t } = useLanguage();
+
+  const STAGES: { stage: ApplicationStage; label: string; office: string; desc: string }[] = [
+    { 
+      stage: "Submitted", 
+      label: t('stageSubmitted'), 
+      office: "Citizen Portal",
+      desc: "Aadhaar e-KYC verified & digital signature logged" 
+    },
+    { 
+      stage: "OCR Verified", 
+      label: t('stageOcr'), 
+      office: "MoTA AI Engine",
+      desc: "Optical extraction & state revenue seal cross-checked" 
+    },
+    { 
+      stage: "Scrutiny", 
+      label: t('stageScrutiny'), 
+      office: "Scrutiny Desk New Delhi",
+      desc: "Verification officer review & discrepancy inspection" 
+    },
+    { 
+      stage: "Selection", 
+      label: t('stageSelection'), 
+      office: "National Selection Board",
+      desc: "Algorithmic composite ranking & quota reservation" 
+    },
+    { 
+      stage: "Sanctioned", 
+      label: t('stageSanctioned'), 
+      office: "Central Treasury / PFMS",
+      desc: "Scholarship sanction order issued & DBT credit enabled" 
+    },
+  ];
   const currentIndex = STAGES.findIndex((s) => s.stage === currentStage);
 
   return (
