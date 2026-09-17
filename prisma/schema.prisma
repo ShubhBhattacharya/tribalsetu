@@ -1,0 +1,125 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String        @id @default(cuid())
+  name         String
+  email        String        @unique
+  role         String        // 'STUDENT', 'MOTA_OFFICER', 'ADMIN'
+  aadhaarHash  String?
+  phone        String?
+  tribalGroup  String?       // e.g. Santhal, Gond, Bhil, Oraon, Munda, Khasi
+  state        String?
+  district     String?
+  annualIncome Float?
+  avatar       String?
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  applications Application[]
+  auditLogs    AuditLog[]
+}
+
+model Scheme {
+  id               String        @id @default(cuid())
+  code             String        @unique // 'NFST', 'NOS'
+  title            String
+  description      String
+  type             String        // 'DOMESTIC_FELLOWSHIP', 'OVERSEAS_SCHOLARSHIP'
+  eligibilityRules String        // JSON string
+  deadline         DateTime
+  budget           Float         // in INR (e.g. 50000000)
+  totalSlots       Int           @default(100)
+  stipendDetails   String?
+  isActive         Boolean       @default(true)
+  createdAt        DateTime      @default(now())
+  updatedAt        DateTime      @updatedAt
+  applications     Application[]
+}
+
+model Application {
+  id              String       @id @default(cuid())
+  applicationNo   String       @unique // e.g. 'NFST-2026-0842'
+  userId          String
+  user            User         @relation(fields: [userId], references: [id])
+  schemeId        String
+  scheme          Scheme       @relation(fields: [schemeId], references: [id])
+  status          String       @default("SUBMITTED") // 'SUBMITTED', 'DEFICIENT', 'VERIFIED', 'APPROVED', 'SANCTIONED', 'REJECTED'
+  currentStage    String       @default("OCR Verified") // 'Submitted', 'OCR Verified', 'Scrutiny', 'Selection', 'Sanctioned'
+  academicScore   Float        // Degree / Master's percentage or GPA
+  univRanking     Int?         // QS or NIRF ranking
+  univName        String?
+  degreeProgram   String?
+  researchTopic   String?
+  meritScore      Float?       // Calculated score (0 - 100)
+  meritRank       Int?
+  annualIncome    Float
+  tribalGroup     String
+  state           String
+  flags           String?      // JSON array of AI flags
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  documents       Document[]
+  deficiencies    Deficiency[]
+  auditLogs       AuditLog[]
+}
+
+model Document {
+  id                 String       @id @default(cuid())
+  applicationId      String
+  application        Application  @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  docType            String       // 'CASTE_CERTIFICATE', 'INCOME_CERTIFICATE', 'MARKSHEET', 'OFFER_LETTER'
+  fileName           String
+  fileUrl            String
+  fileSize           String?
+  ocrData            String?      // JSON string with extracted text, bounding boxes, confidence
+  verificationStatus String       @default("PENDING") // 'VALID', 'FLAGGED', 'PENDING'
+  confidenceScore    Float        @default(90.0) // 0-100%
+  flags              String?      // JSON array of strings e.g. ["NAME_MISMATCH"]
+  uploadedAt         DateTime     @default(now())
+  deficiencies       Deficiency[]
+}
+
+model Deficiency {
+  id            String      @id @default(cuid())
+  applicationId String
+  application   Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  docId         String?
+  document      Document?   @relation(fields: [docId], references: [id], onDelete: SetNull)
+  reason        String
+  details       String?
+  resolved      Boolean     @default(false)
+  createdAt     DateTime    @default(now())
+  resolvedAt    DateTime?
+}
+
+model RuleConfig {
+  id              String   @id @default(cuid())
+  ruleKey         String   @unique // e.g. 'MAX_ANNUAL_INCOME', 'ACADEMIC_CUTOFF_PERCENT', 'QS_RANK_THRESHOLD', 'DOC_VALIDITY_MONTHS'
+  title           String
+  description     String
+  schemeCode      String?  // 'ALL', 'NFST', 'NOS'
+  value           String   // Numeric or string value
+  unit            String?  // 'INR', '%', 'Rank', 'Months'
+  isEditable      Boolean  @default(true)
+  updatedBy       String?
+  updatedAt       DateTime @updatedAt
+}
+
+model AuditLog {
+  id            String       @id @default(cuid())
+  applicationId String?
+  application   Application? @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  userId        String?
+  user          User?        @relation(fields: [userId], references: [id], onDelete: SetNull)
+  actorName     String
+  actorRole     String
+  action        String       // 'STATUS_CHANGE', 'DEFICIENCY_RAISED', 'DEFICIENCY_RESOLVED', 'RULE_UPDATED', 'OCR_VERIFIED'
+  details       String?
+  timestamp     DateTime     @default(now())
+}
