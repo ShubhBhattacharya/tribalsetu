@@ -212,42 +212,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* ================= 1.5 NATIONAL CYBER SECURITY & BLACK CAT COMMANDO BANNER ================= */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="bg-gradient-to-r from-slate-950 via-[#071526] to-slate-900 rounded-3xl border-2 border-red-500/40 p-5 sm:p-6 shadow-xl flex flex-wrap items-center justify-between gap-4 text-white">
-          <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 rounded-2xl bg-red-950/80 border border-red-500/50 flex items-center justify-center text-red-400 shrink-0 shadow-md">
-              <ShieldCheck className="w-7 h-7" />
-            </div>
-            <div>
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="text-xs font-mono font-black text-red-400 tracking-wider">
-                  NSG BLACK CAT COMMANDO CYBER DEFENSE
-                </span>
-                <span className="px-2 py-0.5 rounded bg-red-950 text-red-300 text-[10px] font-bold border border-red-800">
-                  0.000001% Zero Data Leakage
-                </span>
-              </div>
-              <p className="text-xs text-slate-300 mt-0.5 font-medium">
-                जनजातीय कार्य मंत्रालय का उच्च-सुरक्षा पोर्टल: सभी डेटा सैन्य-ग्रेड AES-256-GCM हार्डवेयर एन्क्लेव द्वारा सुरक्षित है। पोर्टल सेवाओं के उपयोग हेतु अधिकृत लॉगिन आवश्यक है।
-              </p>
-            </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="text-right hidden sm:block">
-              <div className="text-[10px] uppercase font-mono text-slate-400 font-bold">Hardware Security</div>
-              <div className="text-xs font-mono font-bold text-emerald-400">HSM LEVEL-4 ENCLAVE</div>
-            </div>
-            <Link
-              href="/student/login"
-              className="px-4 py-2 bg-gradient-to-r from-red-600 to-rose-700 hover:from-red-500 hover:to-rose-600 text-white rounded-xl text-xs font-black shadow-md transition"
-            >
-              सुरक्षित लॉगिन (Secure Login) →
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* ================= 2. SELECT SERVICE PORTAL (अपनी भूमिका चुनें) ================= */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-5">
         <div className="text-center max-w-2xl mx-auto space-y-1.5">

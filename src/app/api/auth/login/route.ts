@@ -48,9 +48,9 @@ export async function POST(req: NextRequest) {
       resolvedKey = "student-birsa";
     }
 
-    // Generate cryptographic military token
+    // Generate cryptographic secure token
     const entropy = crypto.randomBytes(16).toString("hex").toUpperCase();
-    const token = `NSG-BLKCAT-${Date.now()}-${entropy}`;
+    const token = `MOTA-SEC-${Date.now()}-${entropy}`;
     const loginTime = Date.now();
     const expiresInSeconds = 900; // 15 minutes strict session
 
@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
       token,
       userKey: resolvedKey,
       user: targetUser,
-      securityTier: "Z_PLUS_MILITARY_GRADE" as const,
+      securityTier: "ENTERPRISE_GOV_GRADE" as const,
       clearanceLevel: "LEVEL_4_RESTRICTED" as const,
       encryptionStandard: "AES_256_GCM_SHA512" as const,
       loginTimestamp: loginTime,
@@ -68,7 +68,7 @@ export async function POST(req: NextRequest) {
 
     const response = NextResponse.json({
       success: true,
-      message: "Authentication successful. Military session established.",
+      message: "Authentication successful. Secure session established.",
       session: sessionData,
     });
 

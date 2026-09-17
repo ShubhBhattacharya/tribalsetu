@@ -35,8 +35,8 @@ export default function RootLayout({
                     <p className="text-[11px] leading-relaxed text-slate-400">
                       Unified AI-Enabled Higher Education Scholarship & Fellowship System. An initiative under the Ministry of Tribal Affairs, Government of India.
                     </p>
-                    <div className="text-[10px] text-emerald-400 font-mono">
-                      Version 1.0.4-PROD • Digital India Certified • NSG Black Cat Level-4 Cyber Defense
+                    <div className="text-[10px] text-slate-400 font-mono">
+                      Version 1.0.4-PROD • Digital India Certified • NIC National Cloud Hosted
                     </div>
                   </div>
 
@@ -86,7 +86,7 @@ export default function RootLayout({
                     <span>•</span>
                     <span>Powered by AI Optical Inspection Engine</span>
                     <span>•</span>
-                    <span className="text-emerald-400 font-mono">0.000001% Zero Data Leakage Shield</span>
+                    <span className="text-slate-400 font-medium">256-Bit SSL Encrypted • STQC Certified</span>
                   </div>
                 </div>
               </div>

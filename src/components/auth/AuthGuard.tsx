@@ -58,81 +58,79 @@ export default function AuthGuard({ allowedRoles, children }: AuthGuardProps) {
     setIsAuthorizing(false);
   };
 
-  // If not authenticated, render NSG Black Cat Commando Security Clearance Gate
+  // If not authenticated, render Professional GovTech Security Gate
   if (!isAuthenticated || !currentUser) {
     return (
-      <div className="min-h-[calc(100vh-10rem)] flex items-center justify-center p-4 sm:p-6 bg-[#040e1a] text-slate-100 selection:bg-red-500 selection:text-white">
-        <div className="max-w-xl w-full bg-slate-900/90 border-2 border-red-500/50 rounded-3xl p-6 sm:p-8 shadow-2xl shadow-red-950/60 text-center relative overflow-hidden backdrop-blur-md">
-          {/* Ambient Security Watermark */}
-          <div className="absolute top-0 right-0 transform translate-x-8 -translate-y-8 w-48 h-48 bg-red-600/10 rounded-full blur-2xl pointer-events-none"></div>
+      <div className="min-h-[calc(100vh-10rem)] flex items-center justify-center p-4 sm:p-6 bg-slate-100/70 text-slate-800">
+        <div className="max-w-md w-full bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 shadow-xl shadow-slate-200/50 text-center relative overflow-hidden">
+          {/* Subtle Accent Glow */}
+          <div className="absolute top-0 right-0 transform translate-x-8 -translate-y-8 w-40 h-40 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none"></div>
           
-          {/* Black Cat Commando Shield Crest */}
           <div className="relative z-10 space-y-4">
-            <div className="w-20 h-20 mx-auto rounded-3xl bg-gradient-to-br from-red-600 via-red-800 to-black p-0.5 shadow-xl shadow-red-950/70 border border-red-400/40 flex items-center justify-center">
-              <div className="w-full h-full bg-[#071322] rounded-[22px] flex flex-col items-center justify-center">
-                <Lock className="w-8 h-8 text-red-400 animate-pulse" />
-              </div>
+            {/* Clean Lock Icon */}
+            <div className="w-16 h-16 mx-auto rounded-2xl bg-emerald-50 border border-emerald-200 flex items-center justify-center shadow-sm">
+              <Lock className="w-8 h-8 text-emerald-700" />
             </div>
 
-            <div className="space-y-1">
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-red-950/80 border border-red-500/40 text-red-300 text-[11px] font-black uppercase tracking-wider">
-                <span className="w-2 h-2 rounded-full bg-red-500 animate-ping"></span>
-                <span>NSG Black Cat Cyber Shield • Level-4 Restricted</span>
+            <div className="space-y-1.5">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-200 text-emerald-800 text-[11px] font-semibold">
+                <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+                <span>सुरक्षित प्रमाणीकरण • Secure Authentication</span>
               </div>
-              <h1 className="text-2xl sm:text-3xl font-black text-white tracking-tight">
-                सुरक्षा अनुमति आवश्यक (Security Clearance Required)
+              <h1 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
+                प्रवेश आवश्यक (Login Required)
               </h1>
-              <p className="text-xs text-slate-300 font-semibold max-w-md mx-auto leading-relaxed">
-                जनजातीय कार्य मंत्रालय (MoTA) का यह खंड अत्यधिक गोपनीय व सुरक्षित है। डेटा सुरक्षा नीति (Data Leakage Risk &lt; 0.000001%) के अंतर्गत प्रवेश हेतु पूर्व सत्यापन अनिवार्य है।
+              <p className="text-xs text-slate-500 leading-relaxed max-w-sm mx-auto">
+                जनजातीय कार्य मंत्रालय (MoTA) के इस अनुभाग तक पहुँचने के लिए कृपया अपने क्रेडेंशियल्स के साथ लॉगिन करें।
               </p>
             </div>
 
-            {/* Cryptographic Clearance Metrics */}
-            <div className="grid grid-cols-2 gap-2 text-left bg-black/40 p-3 rounded-2xl border border-slate-800 text-[11px] font-mono">
+            {/* Security Protocol Info */}
+            <div className="grid grid-cols-2 gap-2 text-left bg-slate-50 p-3 rounded-xl border border-slate-200 text-[11px]">
               <div>
-                <span className="text-slate-500 block text-[9px] uppercase">Enclave Architecture</span>
-                <span className="text-emerald-400 font-bold">AES-256-GCM Hardware HSM</span>
+                <span className="text-slate-400 block text-[9px] uppercase font-semibold">सुरक्षा प्रोटोकॉल</span>
+                <span className="text-slate-800 font-semibold">256-Bit SSL / TLS 1.3</span>
               </div>
               <div>
-                <span className="text-slate-500 block text-[9px] uppercase">Leak Risk Tolerance</span>
-                <span className="text-amber-400 font-bold">0.000001% Zero-Tolerance</span>
+                <span className="text-slate-400 block text-[9px] uppercase font-semibold">सत्र सुरक्षा</span>
+                <span className="text-emerald-700 font-semibold">Auto-Timeout Active</span>
               </div>
               <div>
-                <span className="text-slate-500 block text-[9px] uppercase">Sector Requested</span>
-                <span className="text-blue-400 font-bold">{pathname}</span>
+                <span className="text-slate-400 block text-[9px] uppercase font-semibold">लक्षित पोर्टल</span>
+                <span className="text-blue-700 font-semibold">{roleTitle}</span>
               </div>
               <div>
-                <span className="text-slate-500 block text-[9px] uppercase">Identity Verification</span>
-                <span className="text-red-400 font-bold">Aadhaar / Jan Parichay 2FA</span>
+                <span className="text-slate-400 block text-[9px] uppercase font-semibold">प्रमाणीकरण विधि</span>
+                <span className="text-slate-800 font-semibold">ID / Password / 2FA</span>
               </div>
             </div>
 
             {/* Actions */}
-            <div className="pt-2 space-y-3">
+            <div className="pt-2 space-y-2.5">
               <Link
                 href={`/${targetPortal}/login`}
-                className="w-full py-3.5 bg-gradient-to-r from-red-600 via-red-700 to-rose-800 hover:from-red-500 hover:to-rose-700 text-white rounded-xl text-xs font-black shadow-lg shadow-red-950/70 transition flex items-center justify-center gap-2"
+                className="w-full py-3 bg-[#0F2F1F] hover:bg-[#16422c] text-white rounded-xl text-xs font-bold shadow-md shadow-emerald-950/20 transition flex items-center justify-center gap-2"
               >
-                <Fingerprint className="w-4 h-4" />
+                <Fingerprint className="w-4 h-4 text-emerald-300" />
                 <span>सुरक्षित लॉगिन करें ({roleTitle} Login)</span>
-                <ArrowRight className="w-4 h-4" />
+                <ArrowRight className="w-4 h-4 text-emerald-300" />
               </Link>
 
               <button
                 type="button"
                 onClick={handleQuickClearance}
                 disabled={isAuthorizing}
-                className="w-full py-2.5 bg-slate-800/80 hover:bg-slate-700/80 text-amber-300 border border-amber-500/30 rounded-xl text-[11px] font-bold transition flex items-center justify-center gap-1.5 cursor-pointer"
+                className="w-full py-2.5 bg-amber-50 hover:bg-amber-100/80 text-amber-900 border border-amber-300/80 rounded-xl text-xs font-semibold transition flex items-center justify-center gap-1.5 cursor-pointer shadow-sm"
               >
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
+                <Sparkles className="w-3.5 h-3.5 text-amber-600" />
                 <span>
-                  {isAuthorizing ? 'Generating NSG Military Token...' : `त्वरित अधिकृत टेस्ट क्लीयरेंस (Instant Demo Pass)`}
+                  {isAuthorizing ? 'प्रमाणीकरण जारी है... (Authenticating...)' : '⚡ त्वरित डेमो एक्सेस (Instant Demo Access)'}
                 </span>
               </button>
             </div>
 
-            <div className="text-[10px] text-slate-500 pt-2 border-t border-slate-800">
-              राष्ट्रीय सूचना विज्ञान केंद्र (NIC) एवं डिजिटल सुरक्षा कमांड, जनजातीय कार्य मंत्रालय, भारत सरकार।
+            <div className="text-[10px] text-slate-400 pt-2 border-t border-slate-100">
+              राष्ट्रीय सूचना विज्ञान केंद्र (NIC), जनजातीय कार्य मंत्रालय, भारत सरकार
             </div>
           </div>
         </div>

@@ -8,7 +8,7 @@ import { UserProfile, UserRole } from '@/types';
 export interface SecureSession {
   token: string;
   user: UserProfile;
-  securityTier: 'Z_PLUS_MILITARY_GRADE';
+  securityTier: 'ENTERPRISE_GOV_GRADE';
   clearanceLevel: 'LEVEL_4_RESTRICTED';
   encryptionStandard: 'AES_256_GCM_SHA512';
   loginTimestamp: number;
@@ -43,7 +43,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   // Initialize session from storage on mount
   useEffect(() => {
     try {
-      const storedToken = localStorage.getItem('tribalsetu_nsg_token');
+      const storedToken = localStorage.getItem('tribalsetu_auth_token');
       const storedKey = localStorage.getItem('tribalsetu_user_key');
       const storedLoginTime = localStorage.getItem('tribalsetu_login_time');
 
@@ -55,7 +55,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           const restoredSession: SecureSession = {
             token: storedToken,
             user: MOCK_USERS[storedKey],
-            securityTier: 'Z_PLUS_MILITARY_GRADE',
+            securityTier: 'ENTERPRISE_GOV_GRADE',
             clearanceLevel: 'LEVEL_4_RESTRICTED',
             encryptionStandard: 'AES_256_GCM_SHA512',
             loginTimestamp: loginTime,
@@ -100,7 +100,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const clearStoredSession = () => {
-    localStorage.removeItem('tribalsetu_nsg_token');
+    localStorage.removeItem('tribalsetu_auth_token');
     localStorage.removeItem('tribalsetu_user_key');
     localStorage.removeItem('tribalsetu_login_time');
     setSession(null);
@@ -126,7 +126,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           const restoredSession: SecureSession = {
             token: s.token,
             user: s.user,
-            securityTier: 'Z_PLUS_MILITARY_GRADE',
+            securityTier: 'ENTERPRISE_GOV_GRADE',
             clearanceLevel: 'LEVEL_4_RESTRICTED',
             encryptionStandard: 'AES_256_GCM_SHA512',
             loginTimestamp: s.loginTimestamp,
@@ -134,7 +134,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             expiresInSeconds: s.expiresInSeconds || SESSION_DURATION,
           };
 
-          localStorage.setItem('tribalsetu_nsg_token', s.token);
+          localStorage.setItem('tribalsetu_auth_token', s.token);
           localStorage.setItem('tribalsetu_user_key', s.userKey);
           localStorage.setItem('tribalsetu_login_time', `${s.loginTimestamp}`);
 
@@ -165,7 +165,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     const newSession: SecureSession = {
       token,
       user,
-      securityTier: 'Z_PLUS_MILITARY_GRADE',
+      securityTier: 'ENTERPRISE_GOV_GRADE',
       clearanceLevel: 'LEVEL_4_RESTRICTED',
       encryptionStandard: 'AES_256_GCM_SHA512',
       loginTimestamp: loginTime,

@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
       authenticated: true,
       user,
       token,
-      securityTier: "Z_PLUS_MILITARY_GRADE",
+      securityTier: "ENTERPRISE_GOV_GRADE",
       clearanceLevel: "LEVEL_4_RESTRICTED",
     });
   } catch (error: any) {

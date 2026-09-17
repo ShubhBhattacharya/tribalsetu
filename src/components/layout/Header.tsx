@@ -98,39 +98,22 @@ export default function Header() {
 
       {/* 2. Official Government of India Top Banner */}
       <div className="bg-[#0a2540] text-slate-100 text-xs py-1.5 px-4 sm:px-8 flex flex-wrap justify-between items-center gap-2 border-b border-slate-800">
-        <div className="flex items-center space-x-2.5 text-[11px] sm:text-xs">
-          <span className="font-bold tracking-wide text-amber-300">{t('govIndia')}</span>
+        <div className="flex items-center space-x-2 text-[11px] sm:text-xs">
+          <span className="font-bold text-amber-300">भारत सरकार</span>
           <span className="text-slate-500">•</span>
-          <span className="font-semibold text-slate-200">Government of India</span>
+          <span className="font-medium text-slate-200">Government of India</span>
           <span className="text-slate-600 hidden sm:inline">|</span>
-          <span className="font-bold text-amber-200 hidden sm:inline">{t('mota')}</span>
+          <span className="font-bold text-amber-200 hidden sm:inline">जनजातीय कार्य मंत्रालय</span>
           <span className="text-slate-500 hidden sm:inline">•</span>
           <span className="text-slate-300 hidden md:inline">Ministry of Tribal Affairs</span>
         </div>
 
         <div className="flex items-center space-x-2.5 flex-wrap">
-          {/* Black Cat Commando Security Status Chip */}
-          {isAuthenticated ? (
-            <div className="flex items-center gap-1.5 bg-red-950/80 border border-red-500/40 text-red-300 px-2 py-0.5 rounded-md text-[10px] font-mono font-bold">
-              <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-ping"></span>
-              <span className="hidden sm:inline">NSG LEVEL-4 SECURE:</span>
-              <span className="text-amber-300 flex items-center gap-1">
-                <Clock className="w-2.5 h-2.5" />
-                {formatTime(sessionRemaining)}
-              </span>
-            </div>
-          ) : (
-            <div className="flex items-center gap-1 bg-amber-950/60 border border-amber-500/40 text-amber-300 px-2 py-0.5 rounded-md text-[10px] font-mono font-bold">
-              <Lock className="w-2.5 h-2.5 text-amber-400" />
-              <span>सुरक्षा स्तर: अन-ऑथराइज्ड (सार्वजनिक दृश्य)</span>
-            </div>
-          )}
-
           {/* Interactive Portal Guide Button */}
           <button
             type="button"
             onClick={() => setShowTour(true)}
-            className="flex items-center gap-1 bg-gradient-to-r from-blue-900 to-indigo-900 hover:from-blue-800 hover:to-indigo-800 text-amber-300 px-2 py-0.5 rounded-md text-[10px] font-bold border border-blue-400/40 transition shadow-2xs cursor-pointer"
+            className="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-amber-300 px-2.5 py-1 rounded-md text-[11px] font-bold border border-slate-600 transition shadow-2xs cursor-pointer"
             title="ओपन पोर्टल गाइड (Open Interactive Guide)"
           >
             <BookOpen className="w-3 h-3 text-amber-300" />
@@ -230,11 +213,11 @@ export default function Header() {
           {isAuthenticated && (
             <button
               onClick={logout}
-              className="flex items-center gap-1 bg-red-800 hover:bg-red-700 text-white px-2 py-0.5 rounded-md text-[10px] font-bold border border-red-500 transition cursor-pointer"
-              title="सुरक्षित लॉगआउट करें (End Session)"
+              className="flex items-center gap-1.5 bg-slate-800 hover:bg-red-800 text-slate-200 hover:text-white px-2.5 py-1 rounded-md text-[11px] font-semibold border border-slate-700 transition cursor-pointer"
+              title="सत्र समाप्त करें (Log out)"
             >
-              <LogOut className="w-2.5 h-2.5" />
-              <span>लॉगआउट</span>
+              <LogOut className="w-3 h-3" />
+              <span>लॉगआउट (Logout)</span>
             </button>
           )}
         </div>
