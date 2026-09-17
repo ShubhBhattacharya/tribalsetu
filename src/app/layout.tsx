@@ -4,6 +4,7 @@ import TribalMitraBot from "@/components/chatbot/TribalMitraBot";
 import InteractiveTourGuide from "@/components/guide/InteractiveTourGuide";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { AuthProvider } from "@/context/AuthContext";
+import TribalSetuLogo from "@/components/ui/TribalSetuLogo";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -30,14 +31,7 @@ export default function RootLayout({
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
                   {/* Col 1 */}
                   <div className="space-y-3 md:col-span-1">
-                    <div className="flex items-center space-x-2">
-                      <div className="w-8 h-8 rounded bg-gradient-to-br from-emerald-600 to-emerald-800 flex items-center justify-center font-bold text-white text-sm">
-                        TS
-                      </div>
-                      <span className="text-base font-bold text-white tracking-tight">
-                        Tribal<span className="text-emerald-400">Setu</span>
-                      </span>
-                    </div>
+                    <TribalSetuLogo size="sm" textColor="light" showText={true} />
                     <p className="text-[11px] leading-relaxed text-slate-400">
                       Unified AI-Enabled Higher Education Scholarship & Fellowship System. An initiative under the Ministry of Tribal Affairs, Government of India.
                     </p>

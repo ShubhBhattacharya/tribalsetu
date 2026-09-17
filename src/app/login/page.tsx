@@ -4,307 +4,337 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { 
-  GraduationCap, 
-  FileCheck2, 
-  BarChart3, 
-  Lock, 
-  ArrowRight, 
+  Globe, 
+  ArrowLeft, 
   Eye, 
   EyeOff, 
-  ArrowLeft,
-  ShieldCheck,
-  AlertCircle,
-  Sparkles
+  Sparkles,
+  Check,
+  ChevronDown
 } from "lucide-react";
+import TribalSetuLogo from "@/components/ui/TribalSetuLogo";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
+import { ALL_INDIAN_LANGUAGES } from "@/lib/chatbotKnowledge";
 
 type RoleTab = "STUDENT" | "MOTA_OFFICER" | "ADMIN";
 
 export default function UnifiedLoginPage() {
   const router = useRouter();
   const { login } = useAuth();
+  const { language, setLanguage } = useLanguage();
 
   const [activeTab, setActiveTab] = useState<RoleTab>("STUDENT");
-  const [identifier, setIdentifier] = useState("8492-4912-7731");
-  const [password, setPassword] = useState("••••••••");
+  const [identifier, setIdentifier] = useState("849249127731");
+  const [password, setPassword] = useState("123456");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [showLangPicker, setShowLangPicker] = useState(false);
+
+  const roleConfig = {
+    STUDENT: {
+      title: "Scholar login",
+      titleHi: "छात्र / शोधार्थी लॉगिन",
+      demoUser: "Birsa Munda",
+      demoId: "849249127731",
+      demoPass: "123456",
+      demoKey: "student-birsa",
+      redirect: "/student/dashboard",
+      inputLabel: "Phone number / Aadhaar number",
+      inputPlaceholder: "e.g. 9876543210 or Aadhaar",
+      registerLinkText: "New here? Create a scholar account",
+      registerHref: "/student/apply"
+    },
+    MOTA_OFFICER: {
+      title: "Officer login",
+      titleHi: "संवीक्षा अधिकारी लॉगिन",
+      demoUser: "Dr. Rajesh Verma",
+      demoId: "rajesh.verma@mota.gov.in",
+      demoPass: "123456",
+      demoKey: "officer-rajesh",
+      redirect: "/officer/scrutiny",
+      inputLabel: "Official MoTA / NIC Email",
+      inputPlaceholder: "e.g. rajesh.verma@mota.gov.in",
+      registerLinkText: "Official Portal • Ministry of Tribal Affairs",
+      registerHref: "/"
+    },
+    ADMIN: {
+      title: "Admin login",
+      titleHi: "मंत्रालय प्रशासक लॉगिन",
+      demoUser: "Smt. Sunita Murmu (IAS)",
+      demoId: "sunita.murmu@mota.gov.in",
+      demoPass: "123456",
+      demoKey: "admin-sunita",
+      redirect: "/admin/analytics",
+      inputLabel: "Secretariat Email",
+      inputPlaceholder: "e.g. sunita.murmu@mota.gov.in",
+      registerLinkText: "Secretariat Desk • Government of India",
+      registerHref: "/"
+    }
+  };
+
+  const current = roleConfig[activeTab];
 
   const handleTabChange = (tab: RoleTab) => {
     setActiveTab(tab);
     setErrorMsg("");
-    if (tab === "STUDENT") {
-      setIdentifier("8492-4912-7731");
-      setPassword("••••••••");
-    } else if (tab === "MOTA_OFFICER") {
-      setIdentifier("rajesh.verma@mota.gov.in");
-      setPassword("••••••••••••");
-    } else {
-      setIdentifier("sunita.murmu@mota.gov.in");
-      setPassword("••••••••••••");
-    }
+    const cfg = roleConfig[tab];
+    setIdentifier(cfg.demoId);
+    setPassword(cfg.demoPass);
   };
 
-  const handleSubmit = async (e?: React.FormEvent) => {
+  const handleLoginSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     setErrorMsg("");
 
     if (!identifier.trim()) {
-      setErrorMsg("कृपया अपनी आईडी दर्ज करें (Please enter ID / Email)");
+      setErrorMsg("Please enter your Phone / Aadhaar or Email");
       return;
     }
 
     setIsLoading(true);
-
-    let userKey = "student-birsa";
-    let redirectPath = "/student/dashboard";
-
-    if (activeTab === "STUDENT") {
-      if (identifier.toLowerCase().includes("shanti") || identifier.includes("9921")) {
-        userKey = "student-shanti";
-      }
-      redirectPath = "/student/dashboard";
-    } else if (activeTab === "MOTA_OFFICER") {
-      userKey = "officer-rajesh";
-      redirectPath = "/officer/scrutiny";
-    } else {
-      userKey = "admin-sunita";
-      redirectPath = "/admin/analytics";
+    let resolvedKey = current.demoKey;
+    if (activeTab === "STUDENT" && identifier.includes("shanti")) {
+      resolvedKey = "student-shanti";
     }
 
     const success = await login({
       identifier,
       password,
       role: activeTab,
-      userKey,
+      userKey: resolvedKey
     });
 
     if (success) {
-      router.push(redirectPath);
+      router.push(current.redirect);
     } else {
-      setErrorMsg("प्रमाणीकरण विफल। कृपया विवरण जांचें। (Authentication failed)");
+      setErrorMsg("Authentication failed. Please check your credentials.");
       setIsLoading(false);
     }
   };
 
-  const handleQuickLogin = async (key: string, path: string) => {
+  const handle1ClickDemo = async () => {
     setErrorMsg("");
     setIsLoading(true);
-    const success = await login(key);
+    setIdentifier(current.demoId);
+    setPassword(current.demoPass);
+    const success = await login(current.demoKey);
     if (success) {
-      router.push(path);
+      router.push(current.redirect);
     } else {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center p-4 sm:p-6 bg-slate-50">
-      <div className="max-w-md w-full space-y-4">
-        {/* Back Link */}
-        <div className="flex items-center justify-between">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>होम (Back to Home)</span>
-          </Link>
-          <div className="flex items-center gap-1 text-[11px] font-semibold text-emerald-800 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
-            <ShieldCheck className="w-3 h-3 text-emerald-600" />
-            <span>MoTA Single Sign-On</span>
+    <div className="relative min-h-screen w-full flex items-center justify-center p-4 sm:p-6 overflow-hidden bg-gradient-to-br from-[#FEF08A] via-[#FDE047] to-[#F59E0B]">
+      {/* Warm Golden Harvest / Sunlit Ambient Backdrop */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-yellow-200/90 via-amber-300/70 to-yellow-600/60 pointer-events-none"></div>
+      
+      {/* Decorative Warm Sunlight Circles */}
+      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-white/40 blur-3xl pointer-events-none"></div>
+      <div className="absolute -bottom-32 -right-32 w-[500px] h-[500px] rounded-full bg-amber-400/50 blur-3xl pointer-events-none"></div>
+      <div className="absolute top-1/3 right-10 w-72 h-72 rounded-full bg-yellow-300/60 blur-2xl pointer-events-none"></div>
+
+      {/* Top Left Home Back Link */}
+      <div className="absolute top-5 left-5 z-20">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/75 hover:bg-white text-xs font-bold text-[#1C3C28] shadow-sm backdrop-blur-md transition border border-white/60"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Home</span>
+        </Link>
+      </div>
+
+      {/* Main Neat & Clean Card (Matching Uploaded Screenshot Style) */}
+      <div className="relative z-10 max-w-md w-full my-8 bg-white/90 sm:bg-white/95 backdrop-blur-xl rounded-[36px] p-7 sm:p-9 shadow-2xl border border-white/80 transition-all">
+        
+        {/* Website Logo Header */}
+        <div className="flex flex-col items-center text-center mb-5">
+          <div className="mb-2">
+            <TribalSetuLogo size="lg" showText={false} />
+          </div>
+          <div className="text-xs font-black tracking-wider uppercase text-amber-900/80">
+            Ministry of Tribal Affairs • Government of India
           </div>
         </div>
 
-        {/* Clean Unified Card */}
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
-          {/* Header */}
-          <div className="bg-gradient-to-r from-[#0a2540] via-[#0f345c] to-[#046a38] text-white p-6 text-center">
-            <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-xs border border-white/20 flex items-center justify-center mx-auto mb-2 shadow-sm">
-              <GraduationCap className="w-6 h-6 text-amber-300" />
-            </div>
-            <span className="text-[10px] font-extrabold uppercase tracking-widest text-emerald-300 block">
-              जनजातीय कार्य मंत्रालय • भारत सरकार
-            </span>
-            <h1 className="text-xl font-black tracking-tight text-white mt-0.5">
-              TribalSetu पोर्टल लॉगिन
-            </h1>
-            <p className="text-[11px] text-slate-300 mt-0.5">
-              अपनी भूमिका का चयन करके केवल आवश्यक विवरण दर्ज करें
-            </p>
+        {/* Clean Role Switcher (Scholar, Officer, Admin) */}
+        <div className="grid grid-cols-3 gap-1 bg-[#F4F6F4] p-1.5 rounded-full mb-6 border border-[#E2E7E3] text-xs font-bold">
+          <button
+            type="button"
+            onClick={() => handleTabChange("STUDENT")}
+            className={`py-2 px-2 rounded-full transition-all cursor-pointer text-center ${
+              activeTab === "STUDENT"
+                ? "bg-[#1C3C28] text-white shadow-sm"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            Scholar
+          </button>
+          <button
+            type="button"
+            onClick={() => handleTabChange("MOTA_OFFICER")}
+            className={`py-2 px-2 rounded-full transition-all cursor-pointer text-center ${
+              activeTab === "MOTA_OFFICER"
+                ? "bg-[#1C3C28] text-white shadow-sm"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            Officer
+          </button>
+          <button
+            type="button"
+            onClick={() => handleTabChange("ADMIN")}
+            className={`py-2 px-2 rounded-full transition-all cursor-pointer text-center ${
+              activeTab === "ADMIN"
+                ? "bg-[#1C3C28] text-white shadow-sm"
+                : "text-slate-600 hover:text-slate-900"
+            }`}
+          >
+            Admin
+          </button>
+        </div>
+
+        {/* Title: Elegant Serif Typography matching Screenshot */}
+        <h1 className="text-3xl sm:text-4xl font-serif font-black text-[#1C3C28] text-center tracking-tight mb-5">
+          {current.title}
+        </h1>
+
+        {/* 💡 Quick Demo Access Box (Exact Replica of User's Image) */}
+        <div className="bg-[#EBF6ED] border border-[#C2E7C8] rounded-2xl p-4 text-center space-y-2 mb-6">
+          <div className="flex items-center justify-center gap-1.5 text-xs font-black text-[#1C3C28]">
+            <span>💡</span>
+            <span>Quick Demo Access ({current.demoUser})</span>
+          </div>
+          <div className="text-[11px] text-[#225732] font-semibold">
+            Demo: <strong className="font-mono text-[#1C3C28]">{current.demoId}</strong> | Password: <strong className="font-mono text-[#1C3C28]">{current.demoPass}</strong>
+          </div>
+          <button
+            type="button"
+            onClick={handle1ClickDemo}
+            disabled={isLoading}
+            className="w-full py-2.5 px-4 bg-[#236A3A] hover:bg-[#1C552E] active:scale-[0.98] text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 cursor-pointer"
+          >
+            <span>⚡</span>
+            <span>1-Click Demo Login (सीधे लॉगिन करें)</span>
+          </button>
+        </div>
+
+        {errorMsg && (
+          <div className="mb-4 p-3 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold text-center">
+            {errorMsg}
+          </div>
+        )}
+
+        {/* Form Fields: Pill-Shaped Inputs matching Screenshot */}
+        <form onSubmit={handleLoginSubmit} className="space-y-4">
+          <div>
+            <label className="block text-xs font-bold text-[#1C3C28] mb-1.5 pl-1">
+              {current.inputLabel}
+            </label>
+            <input
+              type="text"
+              value={identifier}
+              onChange={(e) => setIdentifier(e.target.value)}
+              placeholder={current.inputPlaceholder}
+              className="w-full py-3.5 px-5 bg-[#F0F3F1] border border-[#D6DFD8] rounded-full focus:bg-white focus:border-[#236A3A] focus:ring-2 focus:ring-[#236A3A]/20 text-xs text-slate-800 font-medium placeholder:text-slate-400 outline-none transition"
+              required
+            />
           </div>
 
-          <div className="p-6 sm:p-7 space-y-5">
-            {/* Simple Role Selector Tabs */}
-            <div className="grid grid-cols-3 gap-1.5 p-1 bg-slate-100 rounded-2xl border border-slate-200 text-xs font-bold">
+          <div>
+            <label className="block text-xs font-bold text-[#1C3C28] mb-1.5 pl-1">
+              Password
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password"
+                className="w-full py-3.5 px-5 pr-12 bg-[#F0F3F1] border border-[#D6DFD8] rounded-full focus:bg-white focus:border-[#236A3A] focus:ring-2 focus:ring-[#236A3A]/20 text-xs text-slate-800 font-medium placeholder:text-slate-400 outline-none transition"
+                required
+              />
               <button
                 type="button"
-                onClick={() => handleTabChange("STUDENT")}
-                className={`py-2 rounded-xl transition-all cursor-pointer flex flex-col items-center gap-0.5 ${
-                  activeTab === "STUDENT"
-                    ? "bg-white text-[#0a2540] shadow-xs"
-                    : "text-slate-500 hover:text-slate-900"
-                }`}
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1 cursor-pointer"
               >
-                <span>🎓 छात्र</span>
-                <span className="text-[9px] font-normal text-slate-400">Scholar</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleTabChange("MOTA_OFFICER")}
-                className={`py-2 rounded-xl transition-all cursor-pointer flex flex-col items-center gap-0.5 ${
-                  activeTab === "MOTA_OFFICER"
-                    ? "bg-white text-[#0a2540] shadow-xs"
-                    : "text-slate-500 hover:text-slate-900"
-                }`}
-              >
-                <span>🔍 अधिकारी</span>
-                <span className="text-[9px] font-normal text-slate-400">Officer</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleTabChange("ADMIN")}
-                className={`py-2 rounded-xl transition-all cursor-pointer flex flex-col items-center gap-0.5 ${
-                  activeTab === "ADMIN"
-                    ? "bg-white text-[#0a2540] shadow-xs"
-                    : "text-slate-500 hover:text-slate-900"
-                }`}
-              >
-                <span>⚙️ प्रशासक</span>
-                <span className="text-[9px] font-normal text-slate-400">Admin</span>
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
+          </div>
 
-            {errorMsg && (
-              <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
-                <span>{errorMsg}</span>
-              </div>
-            )}
-
-            {/* Essential Inputs Only */}
-            <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-              <div>
-                <label className="block font-bold text-slate-700 mb-1.5">
-                  {activeTab === "STUDENT"
-                    ? "आधार संख्या या ईमेल (Aadhaar or Email)"
-                    : activeTab === "MOTA_OFFICER"
-                    ? "आधिकारिक ईमेल ID (@mota.gov.in / @nic.in)"
-                    : "सचिवालय ईमेल ID (@mota.gov.in)"}
-                </label>
-                <input
-                  type="text"
-                  value={identifier}
-                  onChange={(e) => setIdentifier(e.target.value)}
-                  className="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-hidden font-medium text-slate-900 transition text-xs"
-                  required
-                />
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="font-bold text-slate-700">
-                    {activeTab === "STUDENT"
-                      ? "पासवर्ड / पिन (Password)"
-                      : activeTab === "MOTA_OFFICER"
-                      ? "सुरक्षा टोकन (Security PIN)"
-                      : "प्रशासक पासकोड (Passcode)"}
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="text-[11px] font-semibold text-emerald-700 hover:text-emerald-800 flex items-center gap-1 cursor-pointer"
-                  >
-                    {showPassword ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
-                    <span>{showPassword ? "छिपाएं" : "दिखाएं"}</span>
-                  </button>
-                </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 focus:outline-hidden font-medium text-slate-900 transition text-xs"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full py-3 bg-[#0a2540] hover:bg-slate-800 active:scale-[0.99] text-white rounded-xl font-bold transition flex items-center justify-center gap-2 shadow-md cursor-pointer"
-              >
-                {isLoading ? (
-                  <span className="flex items-center gap-2">
-                    <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                    <span>प्रवेश हो रहा है...</span>
-                  </span>
-                ) : (
-                  <>
-                    <span>सुरक्षित लॉगिन करें (Login)</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </>
-                )}
-              </button>
-            </form>
-
-            {/* Quick 1-Click Fast Test */}
-            <div className="pt-4 border-t border-slate-100">
-              <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-2">
-                त्वरित 1-क्लिक टेस्ट एक्सेस:
+          {/* Primary CTA Button: Exact Pill Shape & Color */}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full py-3.5 rounded-full bg-[#1C3C28] hover:bg-[#122A1C] active:scale-[0.99] text-white font-black text-sm shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 mt-2"
+          >
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                <span>Logging in...</span>
               </span>
-              {activeTab === "STUDENT" && (
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => handleQuickLogin("student-birsa", "/student/dashboard")}
-                    className="p-2.5 text-left rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-200 transition cursor-pointer"
-                  >
-                    <div className="font-bold text-xs text-slate-800">Birsa Munda</div>
-                    <div className="text-[10px] text-amber-600">NFST Scholar</div>
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleQuickLogin("student-shanti", "/student/dashboard")}
-                    className="p-2.5 text-left rounded-xl bg-slate-50 hover:bg-emerald-50 border border-slate-200 transition cursor-pointer"
-                  >
-                    <div className="font-bold text-xs text-slate-800">Shanti Oraon</div>
-                    <div className="text-[10px] text-emerald-600">NOS Oxford</div>
-                  </button>
-                </div>
-              )}
+            ) : (
+              <span>Log in</span>
+            )}
+          </button>
+        </form>
 
-              {activeTab === "MOTA_OFFICER" && (
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin("officer-rajesh", "/officer/scrutiny")}
-                  className="w-full p-2.5 text-left rounded-xl bg-slate-50 hover:bg-amber-50 border border-slate-200 transition cursor-pointer flex items-center justify-between"
-                >
-                  <div>
-                    <div className="font-bold text-xs text-slate-800">Dr. Rajesh Verma</div>
-                    <div className="text-[10px] text-amber-700">Senior Scrutiny Officer</div>
-                  </div>
-                  <span className="text-amber-700 font-bold text-xs">प्रवेश करें →</span>
-                </button>
-              )}
+        {/* Bottom Link */}
+        <div className="text-center mt-5">
+          <Link
+            href={current.registerHref}
+            className="text-xs font-bold text-[#236A3A] hover:underline hover:text-[#122A1C] transition"
+          >
+            {current.registerLinkText}
+          </Link>
+        </div>
+      </div>
 
-              {activeTab === "ADMIN" && (
-                <button
-                  type="button"
-                  onClick={() => handleQuickLogin("admin-sunita", "/admin/analytics")}
-                  className="w-full p-2.5 text-left rounded-xl bg-slate-50 hover:bg-purple-50 border border-slate-200 transition cursor-pointer flex items-center justify-between"
-                >
-                  <div>
-                    <div className="font-bold text-xs text-slate-800">Smt. Sunita Murmu (IAS)</div>
-                    <div className="text-[10px] text-purple-700">Joint Secretary & Admin</div>
-                  </div>
-                  <span className="text-purple-700 font-bold text-xs">प्रवेश करें →</span>
-                </button>
-              )}
+      {/* Floating Bottom-Left Language Button (Exact Replica from Screenshot) */}
+      <div className="fixed bottom-6 left-6 z-30">
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setShowLangPicker(!showLangPicker)}
+            className="flex items-center gap-2 bg-[#236A3A] hover:bg-[#1A522C] text-white px-4 py-2.5 rounded-full text-xs font-bold shadow-xl border border-white/30 transition hover:scale-105 cursor-pointer"
+          >
+            <Globe className="w-3.5 h-3.5 text-amber-300" />
+            <span>{language.nativeName} / Language</span>
+            <ChevronDown className="w-3 h-3 text-emerald-200" />
+          </button>
+
+          {showLangPicker && (
+            <div className="absolute bottom-12 left-0 w-64 max-h-72 bg-white text-slate-900 rounded-2xl shadow-2xl border border-slate-200 p-2 overflow-y-auto z-50 animate-in fade-in zoom-in-95">
+              <div className="px-2 py-1 border-b border-slate-100 font-bold text-xs text-slate-700">
+                भाषा चुनें (Select Language)
+              </div>
+              <div className="divide-y divide-slate-100 mt-1">
+                {ALL_INDIAN_LANGUAGES.map((l) => (
+                  <button
+                    key={l.code}
+                    onClick={() => {
+                      setLanguage(l);
+                      setShowLangPicker(false);
+                    }}
+                    className={`w-full text-left px-2.5 py-1.5 text-xs rounded-lg flex items-center justify-between transition cursor-pointer ${
+                      language.code === l.code
+                        ? "bg-emerald-50 text-[#1C3C28] font-bold"
+                        : "hover:bg-slate-50 text-slate-700"
+                    }`}
+                  >
+                    <span>{l.nativeName}</span>
+                    <span className="text-[10px] text-slate-400">{l.name}</span>
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

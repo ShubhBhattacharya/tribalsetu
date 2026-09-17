@@ -29,6 +29,7 @@ import { UserProfile, UserRole } from "@/types";
 import { useLanguage } from "@/context/LanguageContext";
 import { useAuth } from "@/context/AuthContext";
 import { ALL_INDIAN_LANGUAGES } from "@/lib/chatbotKnowledge";
+import TribalSetuLogo from "@/components/ui/TribalSetuLogo";
 
 export default function Header() {
   const pathname = usePathname();
@@ -242,23 +243,8 @@ export default function Header() {
       {/* 3. Main Brand & Navigation Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-wrap items-center justify-between gap-4">
         {/* Brand Logo & Emblem */}
-        <Link href="/" className="flex items-center space-x-3.5 group">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-[#0a2540] via-[#0e3b66] to-[#047857] flex items-center justify-center text-white shadow-md shadow-slate-900/10 group-hover:scale-105 transition-transform duration-200 border border-slate-700/20">
-            <GraduationCap className="w-6 h-6 text-amber-300" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2">
-              <span className="text-2xl font-black tracking-tight text-[#0a2540]">
-                Tribal<span className="text-emerald-600">Setu</span>
-              </span>
-              <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-md text-[10px] font-bold bg-emerald-50 text-emerald-700 border border-emerald-300 shadow-2xs">
-                <Sparkles className="w-3 h-3 text-emerald-600" /> AI-Enabled
-              </span>
-            </div>
-            <p className="text-[11px] text-slate-500 font-semibold tracking-wide">
-              {t('portalSubtitle')}
-            </p>
-          </div>
+        <Link href="/" className="flex items-center space-x-3 group">
+          <TribalSetuLogo size="md" textColor="dark" showText={true} />
         </Link>
 
         {/* Dynamic Role Navigation Links */}

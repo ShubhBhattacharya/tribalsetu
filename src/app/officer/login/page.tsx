@@ -4,33 +4,35 @@ import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { 
-  FileCheck2, 
-  Lock, 
-  ArrowRight, 
+  Globe, 
+  ArrowLeft, 
   Eye, 
   EyeOff, 
-  ArrowLeft,
-  ShieldCheck,
-  AlertCircle
+  ChevronDown
 } from "lucide-react";
+import TribalSetuLogo from "@/components/ui/TribalSetuLogo";
 import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
+import { ALL_INDIAN_LANGUAGES } from "@/lib/chatbotKnowledge";
 
 export default function OfficerLoginPage() {
   const router = useRouter();
   const { login } = useAuth();
+  const { language, setLanguage } = useLanguage();
 
   const [govEmail, setGovEmail] = useState("rajesh.verma@mota.gov.in");
-  const [password, setPassword] = useState("••••••••••••");
+  const [password, setPassword] = useState("123456");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [showLangPicker, setShowLangPicker] = useState(false);
 
-  const handleSubmit = async (e?: React.FormEvent) => {
+  const handleLoginSubmit = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     setErrorMsg("");
 
     if (!govEmail.trim()) {
-      setErrorMsg("कृपया आधिकारिक ईमेल दर्ज करें (Please enter official email)");
+      setErrorMsg("Please enter your official MoTA / NIC Email");
       return;
     }
 
@@ -39,20 +41,23 @@ export default function OfficerLoginPage() {
       identifier: govEmail,
       password,
       role: "MOTA_OFFICER",
-      userKey: "officer-rajesh",
+      userKey: "officer-rajesh"
     });
 
     if (success) {
       router.push("/officer/scrutiny");
     } else {
-      setErrorMsg("अधिकारी लॉगिन विफल (Invalid Credentials)");
+      setErrorMsg("Authentication failed. Please verify officer credentials.");
       setIsLoading(false);
     }
   };
 
-  const handleQuickLogin = async () => {
+  const handle1ClickDemo = async () => {
     setErrorMsg("");
     setIsLoading(true);
+    setGovEmail("rajesh.verma@mota.gov.in");
+    setPassword("123456");
+
     const success = await login("officer-rajesh");
     if (success) {
       router.push("/officer/scrutiny");
@@ -62,127 +67,174 @@ export default function OfficerLoginPage() {
   };
 
   return (
-    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center p-4 sm:p-6 bg-slate-50">
-      <div className="max-w-md w-full space-y-4">
-        {/* Back Link */}
-        <div className="flex items-center justify-between">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-slate-800 transition"
-          >
-            <ArrowLeft className="w-3.5 h-3.5" />
-            <span>होम (Back to Home)</span>
-          </Link>
-          <div className="flex items-center gap-1 text-[11px] font-semibold text-amber-900 bg-amber-50 px-2.5 py-0.5 rounded-full border border-amber-200">
-            <ShieldCheck className="w-3 h-3 text-amber-600" />
-            <span>अधिकारी संवीक्षा डेस्क</span>
+    <div className="relative min-h-screen w-full flex items-center justify-center p-4 sm:p-6 overflow-hidden bg-gradient-to-br from-[#FEF08A] via-[#FDE047] to-[#F59E0B]">
+      {/* Warm Golden Harvest / Sunlit Ambient Backdrop */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-yellow-200/90 via-amber-300/70 to-yellow-600/60 pointer-events-none"></div>
+      
+      {/* Decorative Warm Sunlight Circles */}
+      <div className="absolute -top-32 -left-32 w-96 h-96 rounded-full bg-white/40 blur-3xl pointer-events-none"></div>
+      <div className="absolute -bottom-32 -right-32 w-[500px] h-[500px] rounded-full bg-amber-400/50 blur-3xl pointer-events-none"></div>
+
+      {/* Top Left Home Back Link */}
+      <div className="absolute top-5 left-5 z-20">
+        <Link
+          href="/"
+          className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/75 hover:bg-white text-xs font-bold text-[#1C3C28] shadow-sm backdrop-blur-md transition border border-white/60"
+        >
+          <ArrowLeft className="w-3.5 h-3.5" />
+          <span>Home</span>
+        </Link>
+      </div>
+
+      {/* Main Neat & Clean Card (Matching Uploaded Screenshot Style) */}
+      <div className="relative z-10 max-w-md w-full my-8 bg-white/90 sm:bg-white/95 backdrop-blur-xl rounded-[36px] p-7 sm:p-9 shadow-2xl border border-white/80 transition-all">
+        
+        {/* Website Logo Header */}
+        <div className="flex flex-col items-center text-center mb-4">
+          <div className="mb-2">
+            <TribalSetuLogo size="lg" showText={false} />
+          </div>
+          <div className="text-xs font-black tracking-wider uppercase text-amber-900/80">
+            Higher Education Scrutiny Wing • MoTA
           </div>
         </div>
 
-        {/* Clean Officer Login Card */}
-        <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
-          <div className="bg-gradient-to-r from-[#0a2540] via-[#1a3c61] to-[#b45309] text-white p-6 text-center">
-            <div className="w-12 h-12 rounded-2xl bg-white/10 backdrop-blur-xs border border-white/20 flex items-center justify-center mx-auto mb-2.5 shadow-sm">
-              <FileCheck2 className="w-6 h-6 text-amber-300" />
-            </div>
-            <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-300 block">
-              संवीक्षा प्रभाग • जनजातीय कार्य मंत्रालय
-            </span>
-            <h1 className="text-xl font-black tracking-tight text-white mt-0.5">
-              संवीक्षा अधिकारी लॉगिन (Officer Desk)
-            </h1>
-            <p className="text-[11px] text-slate-300 mt-0.5">
-              Government Single Sign-On (NIC / Jan Parichay)
-            </p>
+        {/* Title: Serif Typography matching Screenshot */}
+        <h1 className="text-3xl sm:text-4xl font-serif font-black text-[#1C3C28] text-center tracking-tight mb-5">
+          Officer login
+        </h1>
+
+        {/* 💡 Quick Demo Access Box */}
+        <div className="bg-[#EBF6ED] border border-[#C2E7C8] rounded-2xl p-4 text-center space-y-2 mb-6">
+          <div className="flex items-center justify-center gap-1.5 text-xs font-black text-[#1C3C28]">
+            <span>💡</span>
+            <span>Quick Demo Access (Dr. Rajesh Verma)</span>
+          </div>
+          <div className="text-[11px] text-[#225732] font-semibold">
+            Email: <strong className="font-mono text-[#1C3C28]">rajesh.verma@mota.gov.in</strong> | PIN: <strong className="font-mono text-[#1C3C28]">123456</strong>
+          </div>
+          <button
+            type="button"
+            onClick={handle1ClickDemo}
+            disabled={isLoading}
+            className="w-full py-2.5 px-4 bg-[#236A3A] hover:bg-[#1C552E] active:scale-[0.98] text-white text-xs font-bold rounded-xl shadow-xs transition flex items-center justify-center gap-1.5 cursor-pointer"
+          >
+            <span>⚡</span>
+            <span>1-Click Demo Login (सीधे लॉगिन करें)</span>
+          </button>
+        </div>
+
+        {errorMsg && (
+          <div className="mb-4 p-3 rounded-2xl bg-red-50 border border-red-200 text-red-700 text-xs font-semibold text-center">
+            {errorMsg}
+          </div>
+        )}
+
+        {/* Form Fields: Pill-Shaped Inputs */}
+        <form onSubmit={handleLoginSubmit} className="space-y-4">
+          <div>
+            <label className="block text-xs font-bold text-[#1C3C28] mb-1.5 pl-1">
+              Official Email (@mota.gov.in / @nic.in)
+            </label>
+            <input
+              type="email"
+              value={govEmail}
+              onChange={(e) => setGovEmail(e.target.value)}
+              placeholder="e.g. rajesh.verma@mota.gov.in"
+              className="w-full py-3.5 px-5 bg-[#F0F3F1] border border-[#D6DFD8] rounded-full focus:bg-white focus:border-[#236A3A] focus:ring-2 focus:ring-[#236A3A]/20 text-xs text-slate-800 font-medium placeholder:text-slate-400 outline-none transition"
+              required
+            />
           </div>
 
-          <div className="p-6 sm:p-7 space-y-5">
-            {errorMsg && (
-              <div className="p-3 rounded-xl bg-red-50 border border-red-200 text-red-700 text-xs flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0 text-red-500" />
-                <span>{errorMsg}</span>
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-              <div>
-                <label className="block font-bold text-slate-700 mb-1.5">
-                  आधिकारिक ईमेल ID (@mota.gov.in / @nic.in)
-                </label>
-                <input
-                  type="email"
-                  value={govEmail}
-                  onChange={(e) => setGovEmail(e.target.value)}
-                  placeholder="officer.name@mota.gov.in"
-                  className="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 focus:outline-hidden font-medium text-slate-900 transition text-xs"
-                  required
-                />
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-1.5">
-                  <label className="font-bold text-slate-700">
-                    सुरक्षा पिन / पासवर्ड (Security Token)
-                  </label>
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="text-[11px] font-semibold text-amber-700 hover:text-amber-800 flex items-center gap-1 cursor-pointer"
-                  >
-                    {showPassword ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
-                    <span>{showPassword ? "छिपाएं" : "दिखाएं"}</span>
-                  </button>
-                </div>
-                <input
-                  type={showPassword ? "text" : "password"}
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••"
-                  className="w-full p-3 bg-slate-50 border border-slate-300 rounded-xl focus:bg-white focus:ring-2 focus:ring-amber-500 focus:border-amber-500 focus:outline-hidden font-medium text-slate-900 transition text-xs"
-                  required
-                />
-              </div>
-
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full py-3 bg-[#0a2540] hover:bg-slate-800 active:scale-[0.99] text-white rounded-xl font-bold transition flex items-center justify-center gap-2 shadow-md cursor-pointer"
-              >
-                {isLoading ? (
-                  <span className="flex items-center gap-2">
-                    <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
-                    <span>डेस्क खोला जा रहा है...</span>
-                  </span>
-                ) : (
-                  <>
-                    <span>संवीक्षा डेस्क में प्रवेश करें</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </>
-                )}
-              </button>
-            </form>
-
-            <div className="pt-4 border-t border-slate-100">
-              <span className="text-[10px] font-extrabold uppercase tracking-wider text-slate-400 block mb-2">
-                त्वरित अधिकारी लॉगिन (1-Click Test Access):
-              </span>
+          <div>
+            <label className="block text-xs font-bold text-[#1C3C28] mb-1.5 pl-1">
+              Security Token / Password
+            </label>
+            <div className="relative">
+              <input
+                type={showPassword ? "text" : "password"}
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter password"
+                className="w-full py-3.5 px-5 pr-12 bg-[#F0F3F1] border border-[#D6DFD8] rounded-full focus:bg-white focus:border-[#236A3A] focus:ring-2 focus:ring-[#236A3A]/20 text-xs text-slate-800 font-medium placeholder:text-slate-400 outline-none transition"
+                required
+              />
               <button
                 type="button"
-                onClick={handleQuickLogin}
-                className="w-full p-2.5 text-left rounded-xl bg-slate-50 hover:bg-amber-50/80 border border-slate-200 hover:border-amber-300 transition cursor-pointer group flex items-center justify-between"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1 cursor-pointer"
               >
-                <div>
-                  <div className="font-bold text-slate-800 text-xs group-hover:text-amber-950">
-                    Dr. Rajesh Verma
-                  </div>
-                  <div className="text-[10px] text-amber-700 font-semibold">
-                    Senior Scrutiny Officer • Higher Education Section
-                  </div>
-                </div>
-                <span className="text-amber-700 font-bold text-xs">लॉगिन करें →</span>
+                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
           </div>
+
+          {/* Primary CTA Button: Pill Shape */}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="w-full py-3.5 rounded-full bg-[#1C3C28] hover:bg-[#122A1C] active:scale-[0.99] text-white font-black text-sm shadow-md transition-all cursor-pointer flex items-center justify-center gap-2 mt-2"
+          >
+            {isLoading ? (
+              <span className="flex items-center gap-2">
+                <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+                <span>Opening Workbench...</span>
+              </span>
+            ) : (
+              <span>Log in</span>
+            )}
+          </button>
+        </form>
+
+        <div className="text-center mt-5">
+          <Link
+            href="/"
+            className="text-xs font-bold text-[#236A3A] hover:underline hover:text-[#122A1C] transition"
+          >
+            Ministry Secretariat Portal • Government of India
+          </Link>
+        </div>
+      </div>
+
+      {/* Floating Bottom-Left Language Button */}
+      <div className="fixed bottom-6 left-6 z-30">
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setShowLangPicker(!showLangPicker)}
+            className="flex items-center gap-2 bg-[#236A3A] hover:bg-[#1A522C] text-white px-4 py-2.5 rounded-full text-xs font-bold shadow-xl border border-white/30 transition hover:scale-105 cursor-pointer"
+          >
+            <Globe className="w-3.5 h-3.5 text-amber-300" />
+            <span>{language.nativeName} / Language</span>
+            <ChevronDown className="w-3 h-3 text-emerald-200" />
+          </button>
+
+          {showLangPicker && (
+            <div className="absolute bottom-12 left-0 w-64 max-h-72 bg-white text-slate-900 rounded-2xl shadow-2xl border border-slate-200 p-2 overflow-y-auto z-50 animate-in fade-in zoom-in-95">
+              <div className="px-2 py-1 border-b border-slate-100 font-bold text-xs text-slate-700">
+                भाषा चुनें (Select Language)
+              </div>
+              <div className="divide-y divide-slate-100 mt-1">
+                {ALL_INDIAN_LANGUAGES.map((l) => (
+                  <button
+                    key={l.code}
+                    onClick={() => {
+                      setLanguage(l);
+                      setShowLangPicker(false);
+                    }}
+                    className={`w-full text-left px-2.5 py-1.5 text-xs rounded-lg flex items-center justify-between transition cursor-pointer ${
+                      language.code === l.code
+                        ? "bg-emerald-50 text-[#1C3C28] font-bold"
+                        : "hover:bg-slate-50 text-slate-700"
+                    }`}
+                  >
+                    <span>{l.nativeName}</span>
+                    <span className="text-[10px] text-slate-400">{l.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>
