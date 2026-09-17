@@ -152,17 +152,50 @@ export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const scheme = searchParams.get("scheme");
   const status = searchParams.get("status");
+  const tribalGroup = searchParams.get("tribalGroup");
+  const state = searchParams.get("state");
+  const q = searchParams.get("q")?.toLowerCase();
 
   let filtered = [...MOCK_DB_APPLICATIONS];
+
   if (scheme && scheme !== "ALL") {
-    filtered = filtered.filter((a) => a.schemeCode === scheme);
+    filtered = filtered.filter((a) => a.schemeCode.toUpperCase() === scheme.toUpperCase());
   }
   if (status && status !== "ALL") {
-    filtered = filtered.filter((a) => a.status === status);
+    filtered = filtered.filter((a) => a.status.toUpperCase() === status.toUpperCase());
   }
+  if (tribalGroup && tribalGroup !== "ALL") {
+    filtered = filtered.filter((a) => a.tribalGroup.toLowerCase() === tribalGroup.toLowerCase());
+  }
+  if (state && state !== "ALL") {
+    filtered = filtered.filter((a) => a.state.toLowerCase() === state.toLowerCase());
+  }
+  if (q) {
+    filtered = filtered.filter(
+      (a) =>
+        a.user.name.toLowerCase().includes(q) ||
+        a.applicationNo.toLowerCase().includes(q) ||
+        a.univName?.toLowerCase().includes(q) ||
+        a.degreeProgram?.toLowerCase().includes(q) ||
+        a.tribalGroup.toLowerCase().includes(q) ||
+        a.state.toLowerCase().includes(q)
+    );
+  }
+
+  // Summary statistics for dashboard/analytics
+  const stats = {
+    total: MOCK_DB_APPLICATIONS.length,
+    submitted: MOCK_DB_APPLICATIONS.filter((a) => a.status === "SUBMITTED").length,
+    deficient: MOCK_DB_APPLICATIONS.filter((a) => a.status === "DEFICIENT").length,
+    verified: MOCK_DB_APPLICATIONS.filter((a) => a.status === "VERIFIED").length,
+    approved: MOCK_DB_APPLICATIONS.filter((a) => a.status === "APPROVED").length,
+    sanctioned: MOCK_DB_APPLICATIONS.filter((a) => a.status === "SANCTIONED").length,
+  };
 
   return NextResponse.json({
     success: true,
+    total: filtered.length,
+    stats,
     data: filtered,
   });
 }

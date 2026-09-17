@@ -365,7 +365,7 @@ export default function Header() {
         <div className="flex items-center gap-2">
           {!isAuthenticated ? (
             <Link
-              href="/student/login"
+              href="/login"
               className="px-4 py-2 bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white rounded-xl text-xs font-black shadow-sm flex items-center gap-1.5 transition"
             >
               <Lock className="w-3.5 h-3.5" />
