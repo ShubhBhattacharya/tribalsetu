@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Header from "@/components/layout/Header";
+import TribalMitraBot from "@/components/chatbot/TribalMitraBot";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -89,6 +90,7 @@ export default function RootLayout({
             </div>
           </div>
         </footer>
+        <TribalMitraBot />
       </body>
     </html>
   );
