@@ -24,76 +24,17 @@ export default function TribalSetuLogo({
 
   return (
     <div className="flex items-center space-x-3 group select-none">
-      {/* Handcrafted Golden Sun & Tribal Bridge Emblem */}
+      {/* Official TribalSetu Circular Emblem */}
       <div 
-        className="relative flex items-center justify-center shrink-0 rounded-2xl shadow-md transition-transform duration-200 group-hover:scale-105"
+        className="relative flex items-center justify-center shrink-0 rounded-full shadow-md transition-transform duration-200 group-hover:scale-105 overflow-hidden ring-2 ring-amber-400/60 bg-white"
         style={{ width: dim.icon, height: dim.icon }}
       >
-        <svg
-          viewBox="0 0 100 100"
-          className="w-full h-full drop-shadow-sm"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          {/* Base Background: Warm Golden Radial Gradient */}
-          <defs>
-            <linearGradient id="yellowGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#FBBF24" /> {/* Bright Yellow */}
-              <stop offset="50%" stopColor="#F59E0B" /> {/* Amber */}
-              <stop offset="100%" stopColor="#D97706" /> {/* Deep Gold */}
-            </linearGradient>
-            <linearGradient id="forestGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stopColor="#15803D" /> {/* Forest Green */}
-              <stop offset="100%" stopColor="#0F2F1F" /> {/* Deep Pine */}
-            </linearGradient>
-            <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
-              <feGaussianBlur stdDeviation="3" result="blur" />
-              <feComposite in="SourceGraphic" in2="blur" operator="over" />
-            </filter>
-          </defs>
-
-          {/* Outer Rounded Shield / Circle */}
-          <rect width="100" height="100" rx="26" fill="url(#yellowGoldGrad)" />
-
-          {/* Radiating Tribal Sun Rays */}
-          <circle cx="50" cy="46" r="32" stroke="#FEF3C7" strokeWidth="2" strokeDasharray="3 3" opacity="0.6" />
-
-          {/* Rising Golden Sun */}
-          <circle cx="50" cy="44" r="16" fill="#FFFBEB" filter="url(#glow)" />
-          <circle cx="50" cy="44" r="12" fill="#FDE047" />
-
-          {/* Arch Bridge ("Setu" 🌉) connecting Tribal Heritage to Higher Education */}
-          <path
-            d="M18 68 C34 50, 66 50, 82 68"
-            stroke="url(#forestGrad)"
-            strokeWidth="7"
-            strokeLinecap="round"
-          />
-          {/* Bridge Pillars */}
-          <path d="M32 62 L32 74" stroke="url(#forestGrad)" strokeWidth="3" strokeLinecap="round" />
-          <path d="M50 56 L50 74" stroke="url(#forestGrad)" strokeWidth="3.5" strokeLinecap="round" />
-          <path d="M68 62 L68 74" stroke="url(#forestGrad)" strokeWidth="3" strokeLinecap="round" />
-
-          {/* Scholar Mortarboard / Graduation Cap atop Sun */}
-          <path
-            d="M50 25 L66 32 L50 39 L34 32 Z"
-            fill="#0F2F1F"
-            stroke="#FEF3C7"
-            strokeWidth="1.5"
-          />
-          {/* Cap tassel */}
-          <path d="M60 35 L62 44" stroke="#FEF08A" strokeWidth="2" strokeLinecap="round" />
-          <circle cx="62" cy="45" r="1.5" fill="#FEF08A" />
-
-          {/* Water / Soil Waves at Base */}
-          <path
-            d="M20 78 Q35 74 50 78 T80 78"
-            stroke="#FEF3C7"
-            strokeWidth="2"
-            strokeLinecap="round"
-            opacity="0.8"
-          />
-        </svg>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/logo.png"
+          alt="TribalSetu MoTA Official Emblem"
+          className="w-full h-full object-cover rounded-full"
+        />
       </div>
 
       {/* Brand Typography */}

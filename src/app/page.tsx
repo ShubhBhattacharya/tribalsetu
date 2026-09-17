@@ -138,12 +138,13 @@ export default function HomePage() {
         ))}
 
         {/* Top-Right Circular National Emblem Badge */}
-        <div className="absolute top-5 right-6 z-20 w-18 h-18 sm:w-20 sm:h-20 rounded-full bg-white shadow-xl border-3 border-amber-400 p-1 flex items-center justify-center overflow-hidden">
-          <div className="text-center">
-            <span className="text-xs font-black text-[#0a2540] block leading-none">सत्यमेव</span>
-            <span className="text-xs font-black text-[#0a2540] block leading-none">जयते</span>
-            <span className="text-[8px] font-bold text-amber-700 block mt-0.5">MoTA • GOI</span>
-          </div>
+        <div className="absolute top-5 right-6 z-20 w-18 h-18 sm:w-22 sm:h-22 rounded-full bg-white shadow-2xl border-3 border-amber-400 p-0.5 flex items-center justify-center overflow-hidden ring-4 ring-white/30 transition hover:scale-105">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo.png"
+            alt="TribalSetu Official Emblem"
+            className="w-full h-full object-cover rounded-full"
+          />
         </div>
 
         {/* Carousel Arrow Controls */}
