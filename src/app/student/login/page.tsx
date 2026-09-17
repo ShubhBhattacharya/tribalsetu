@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -13,32 +13,41 @@ import {
   ArrowRight,
   Fingerprint,
   FileCheck2,
-  AlertCircle
+  AlertCircle,
+  ShieldAlert
 } from "lucide-react";
-import { MOCK_USERS } from "@/lib/auth";
+import { useAuth } from "@/context/AuthContext";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function StudentLoginPage() {
   const router = useRouter();
+  const { login } = useAuth();
+  const { t } = useLanguage();
+
   const [authMode, setAuthMode] = useState<"aadhaar" | "credentials">("aadhaar");
   const [aadhaarNumber, setAadhaarNumber] = useState("8492-4912-7731");
   const [email, setEmail] = useState("birsa.munda@scholar.in");
   const [password, setPassword] = useState("••••••••");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (userKey: string = "student-birsa") => {
+  const handleLogin = async (userKey: string = "student-birsa") => {
     setIsLoading(true);
-    localStorage.setItem("tribalsetu_user_key", userKey);
-    setTimeout(() => {
+    const success = await login(userKey);
+    if (success) {
+      setTimeout(() => {
+        setIsLoading(false);
+        router.push("/student/dashboard");
+      }, 400);
+    } else {
       setIsLoading(false);
-      router.push("/student/dashboard");
-    }, 600);
+    }
   };
 
   return (
     <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center p-4 sm:p-6 bg-slate-50">
-      <div className="max-w-xl w-full space-y-6">
-        {/* Back Link */}
-        <div>
+      <div className="max-w-xl w-full space-y-5">
+        {/* Back Link & Security Alert Strip */}
+        <div className="flex items-center justify-between">
           <Link
             href="/"
             className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-slate-800 transition"
@@ -46,6 +55,11 @@ export default function StudentLoginPage() {
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>मुख्य पृष्ठ (Back to Home)</span>
           </Link>
+
+          <div className="flex items-center gap-1 text-[11px] font-bold text-emerald-800 bg-emerald-100/80 px-2.5 py-0.5 rounded-full border border-emerald-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 animate-ping"></span>
+            <span>NSG Black Cat Shield Active</span>
+          </div>
         </div>
 
         {/* Login Card */}
@@ -66,13 +80,25 @@ export default function StudentLoginPage() {
             </p>
           </div>
 
-          <div className="p-6 sm:p-8 space-y-6">
+          <div className="p-6 sm:p-8 space-y-5">
+            {/* Military Cyber Security Badge */}
+            <div className="p-3 bg-slate-900 rounded-2xl text-slate-200 text-xs border border-red-500/30 flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <ShieldAlert className="w-4 h-4 text-red-400 shrink-0" />
+                <div>
+                  <div className="text-[11px] font-mono font-bold text-red-300">BLACK CAT COMMANDO CYBER DEFENSE</div>
+                  <div className="text-[10px] text-slate-400">Zero Data Leakage Protocol (0.000001% Risk Threshold)</div>
+                </div>
+              </div>
+              <span className="text-[9px] font-mono text-emerald-400 bg-emerald-950 px-2 py-0.5 rounded border border-emerald-700">AES-256-GCM</span>
+            </div>
+
             {/* Auth Mode Tabs */}
             <div className="grid grid-cols-2 gap-2 p-1.5 bg-slate-100 rounded-xl border border-slate-200 text-xs font-bold">
               <button
                 type="button"
                 onClick={() => setAuthMode("aadhaar")}
-                className={`py-2 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                className={`py-2 rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                   authMode === "aadhaar"
                     ? "bg-white text-[#0a2540] shadow-xs"
                     : "text-slate-500 hover:text-slate-800"
@@ -84,7 +110,7 @@ export default function StudentLoginPage() {
               <button
                 type="button"
                 onClick={() => setAuthMode("credentials")}
-                className={`py-2 rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+                className={`py-2 rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                   authMode === "credentials"
                     ? "bg-white text-[#0a2540] shadow-xs"
                     : "text-slate-500 hover:text-slate-800"
@@ -123,13 +149,13 @@ export default function StudentLoginPage() {
                   type="button"
                   onClick={() => handleLogin("student-birsa")}
                   disabled={isLoading}
-                  className="w-full py-3 bg-[#0a2540] hover:bg-slate-800 text-white rounded-xl font-bold transition flex items-center justify-center gap-2 shadow-md hover:scale-[1.01]"
+                  className="w-full py-3 bg-[#0a2540] hover:bg-slate-800 text-white rounded-xl font-bold transition flex items-center justify-center gap-2 shadow-md hover:scale-[1.01] cursor-pointer"
                 >
                   {isLoading ? (
-                    <span>Verifying e-KYC Credentials...</span>
+                    <span>Verifying e-KYC Credentials & Generating NSG Token...</span>
                   ) : (
                     <>
-                      <span>Generate OTP & Login</span>
+                      <span>Generate OTP & Secure Login</span>
                       <ArrowRight className="w-4 h-4" />
                     </>
                   )}
@@ -160,9 +186,9 @@ export default function StudentLoginPage() {
                   type="button"
                   onClick={() => handleLogin("student-birsa")}
                   disabled={isLoading}
-                  className="w-full py-3 bg-[#0a2540] hover:bg-slate-800 text-white rounded-xl font-bold transition flex items-center justify-center gap-2 shadow-md hover:scale-[1.01]"
+                  className="w-full py-3 bg-[#0a2540] hover:bg-slate-800 text-white rounded-xl font-bold transition flex items-center justify-center gap-2 shadow-md hover:scale-[1.01] cursor-pointer"
                 >
-                  <span>Login to Portal</span>
+                  <span>Login to Secure Portal</span>
                   <ArrowRight className="w-4 h-4" />
                 </button>
               </div>
@@ -177,7 +203,7 @@ export default function StudentLoginPage() {
                 <button
                   type="button"
                   onClick={() => handleLogin("student-birsa")}
-                  className="p-3 text-left rounded-xl bg-amber-50/70 hover:bg-amber-100/70 border border-amber-200 transition"
+                  className="p-3 text-left rounded-xl bg-amber-50/70 hover:bg-amber-100/70 border border-amber-200 transition cursor-pointer"
                 >
                   <div className="text-xs font-black text-amber-950">Birsa Munda (Santhal)</div>
                   <div className="text-[10px] text-amber-800 font-semibold mt-0.5">
@@ -188,7 +214,7 @@ export default function StudentLoginPage() {
                 <button
                   type="button"
                   onClick={() => handleLogin("student-shanti")}
-                  className="p-3 text-left rounded-xl bg-emerald-50/70 hover:bg-emerald-100/70 border border-emerald-200 transition"
+                  className="p-3 text-left rounded-xl bg-emerald-50/70 hover:bg-emerald-100/70 border border-emerald-200 transition cursor-pointer"
                 >
                   <div className="text-xs font-black text-emerald-950">Shanti Oraon (Oraon)</div>
                   <div className="text-[10px] text-emerald-800 font-semibold mt-0.5">

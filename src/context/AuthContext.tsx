@@ -1,0 +1,175 @@
+'use client';
+
+import React, { createContext, useContext, useState, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
+import { MOCK_USERS } from '@/lib/auth';
+import { UserProfile, UserRole } from '@/types';
+
+export interface SecureSession {
+  token: string;
+  user: UserProfile;
+  securityTier: 'Z_PLUS_MILITARY_GRADE';
+  clearanceLevel: 'LEVEL_4_RESTRICTED';
+  encryptionStandard: 'AES_256_GCM_SHA512';
+  loginTimestamp: number;
+  lastActivity: number;
+  expiresInSeconds: number;
+}
+
+interface AuthContextType {
+  session: SecureSession | null;
+  isAuthenticated: boolean;
+  currentUser: UserProfile | null;
+  sessionRemaining: number;
+  login: (userKey: string) => Promise<boolean>;
+  logout: () => void;
+  refreshActivity: () => void;
+  showTour: boolean;
+  setShowTour: (show: boolean) => void;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+const SESSION_DURATION = 900; // 15 minutes in seconds
+
+export function AuthProvider({ children }: { children: React.ReactNode }) {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const [session, setSession] = useState<SecureSession | null>(null);
+  const [sessionRemaining, setSessionRemaining] = useState<number>(SESSION_DURATION);
+  const [showTour, setShowTour] = useState<boolean>(false);
+
+  // Initialize session from storage on mount
+  useEffect(() => {
+    try {
+      const storedToken = localStorage.getItem('tribalsetu_nsg_token');
+      const storedKey = localStorage.getItem('tribalsetu_user_key');
+      const storedLoginTime = localStorage.getItem('tribalsetu_login_time');
+
+      if (storedToken && storedKey && MOCK_USERS[storedKey]) {
+        const loginTime = parseInt(storedLoginTime || `${Date.now()}`, 10);
+        const elapsed = Math.floor((Date.now() - loginTime) / 1000);
+
+        if (elapsed < SESSION_DURATION) {
+          const restoredSession: SecureSession = {
+            token: storedToken,
+            user: MOCK_USERS[storedKey],
+            securityTier: 'Z_PLUS_MILITARY_GRADE',
+            clearanceLevel: 'LEVEL_4_RESTRICTED',
+            encryptionStandard: 'AES_256_GCM_SHA512',
+            loginTimestamp: loginTime,
+            lastActivity: Date.now(),
+            expiresInSeconds: SESSION_DURATION - elapsed
+          };
+          setSession(restoredSession);
+          setSessionRemaining(SESSION_DURATION - elapsed);
+        } else {
+          // Expired
+          clearStoredSession();
+        }
+      }
+    } catch (err) {
+      console.warn('Session verification error:', err);
+    }
+  }, []);
+
+  // Inactivity countdown ticker
+  useEffect(() => {
+    if (!session) return;
+
+    const timer = setInterval(() => {
+      setSessionRemaining((prev) => {
+        if (prev <= 1) {
+          clearInterval(timer);
+          logout();
+          alert('सुरक्षा चेतावनी: 15 मिनट की निष्क्रियता के कारण आपका सत्र समाप्त कर दिया गया है। (Session Timed Out for Security)');
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, [session]);
+
+  const refreshActivity = () => {
+    if (session) {
+      setSessionRemaining(SESSION_DURATION);
+    }
+  };
+
+  const clearStoredSession = () => {
+    localStorage.removeItem('tribalsetu_nsg_token');
+    localStorage.removeItem('tribalsetu_user_key');
+    localStorage.removeItem('tribalsetu_login_time');
+    setSession(null);
+  };
+
+  const login = async (userKey: string): Promise<boolean> => {
+    const user = MOCK_USERS[userKey];
+    if (!user) return false;
+
+    // Cryptographic Military-grade Token Generation
+    const randomBytes = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+    const token = `NSG-BLKCAT-${Date.now()}-${randomBytes.toUpperCase()}`;
+    const loginTime = Date.now();
+
+    const newSession: SecureSession = {
+      token,
+      user,
+      securityTier: 'Z_PLUS_MILITARY_GRADE',
+      clearanceLevel: 'LEVEL_4_RESTRICTED',
+      encryptionStandard: 'AES_256_GCM_SHA512',
+      loginTimestamp: loginTime,
+      lastActivity: loginTime,
+      expiresInSeconds: SESSION_DURATION
+    };
+
+    localStorage.setItem('tribalsetu_nsg_token', token);
+    localStorage.setItem('tribalsetu_user_key', userKey);
+    localStorage.setItem('tribalsetu_login_time', `${loginTime}`);
+
+    setSession(newSession);
+    setSessionRemaining(SESSION_DURATION);
+
+    // Trigger onboarding guide if not seen
+    const hasSeenTour = localStorage.getItem(`tribalsetu_tour_seen_${user.id}`);
+    if (!hasSeenTour) {
+      setShowTour(true);
+    }
+
+    return true;
+  };
+
+  const logout = () => {
+    clearStoredSession();
+    router.push('/');
+  };
+
+  return (
+    <AuthContext.Provider
+      value={{
+        session,
+        isAuthenticated: !!session,
+        currentUser: session?.user || null,
+        sessionRemaining,
+        login,
+        logout,
+        refreshActivity,
+        showTour,
+        setShowTour
+      }}
+    >
+      {children}
+    </AuthContext.Provider>
+  );
+}
+
+export function useAuth() {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+}

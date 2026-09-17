@@ -23,31 +23,36 @@ import {
 import StatusStepper from "@/components/student/StatusStepper";
 import { ApplicationItem } from "@/types";
 import { useLanguage } from "@/context/LanguageContext";
+import { useAuth } from "@/context/AuthContext";
 
 export default function StudentDashboard() {
   const { t } = useLanguage();
+  const { currentUser } = useAuth();
+
+  const isShanti = currentUser?.id === "usr_student_shanti";
+
   const [activeApplication, setActiveApplication] = useState<ApplicationItem>({
-    id: "app-1",
-    applicationNo: "NFST-2026-0842",
-    userId: "usr_student_birsa",
-    schemeId: "sch_nfst",
-    status: "DEFICIENT",
-    currentStage: "Scrutiny",
-    academicScore: 78.5,
-    univRanking: 12,
-    univName: "Jawaharlal Nehru University, New Delhi",
-    degreeProgram: "Ph.D. in Environmental Anthropology",
-    researchTopic: "Indigenous Forest Conservation Practices in Chota Nagpur Plateau",
-    meritScore: 82.4,
-    annualIncome: 240000,
-    tribalGroup: "Santhal",
-    state: "Jharkhand",
-    flags: ["EXPIRED_DOCUMENT"],
+    id: isShanti ? "app-2" : "app-1",
+    applicationNo: isShanti ? "NOS-2026-0042" : "NFST-2026-0842",
+    userId: isShanti ? "usr_student_shanti" : "usr_student_birsa",
+    schemeId: isShanti ? "sch_nos" : "sch_nfst",
+    status: isShanti ? "APPROVED" : "DEFICIENT",
+    currentStage: isShanti ? "Sanctioned" : "Scrutiny",
+    academicScore: isShanti ? 91.2 : 78.5,
+    univRanking: isShanti ? 3 : 12,
+    univName: isShanti ? "University of Oxford, United Kingdom" : "Jawaharlal Nehru University, New Delhi",
+    degreeProgram: isShanti ? "Ph.D. in Genomic Epidemiology of Endemic Diseases" : "Ph.D. in Environmental Anthropology",
+    researchTopic: isShanti ? "Genetic Markers of Sickle Cell Trait in Central Indian Tribes" : "Indigenous Forest Conservation Practices in Chota Nagpur Plateau",
+    meritScore: isShanti ? 94.6 : 82.4,
+    annualIncome: isShanti ? 380000 : 240000,
+    tribalGroup: isShanti ? "Oraon" : "Santhal",
+    state: isShanti ? "Odisha" : "Jharkhand",
+    flags: isShanti ? [] : ["EXPIRED_DOCUMENT"],
     createdAt: "2026-05-12T10:30:00Z",
     updatedAt: "2026-09-17T11:15:00Z",
   });
 
-  const [hasDeficiency, setHasDeficiency] = useState(true);
+  const [hasDeficiency, setHasDeficiency] = useState(!isShanti);
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
@@ -61,7 +66,7 @@ export default function StudentDashboard() {
             {/* Avatar Pill with Gold Border */}
             <div className="relative">
               <div className="w-18 h-18 sm:w-20 sm:h-20 rounded-2xl bg-gradient-to-tr from-amber-400 to-amber-200 text-[#0a2540] flex items-center justify-center font-black text-2xl shadow-lg ring-4 ring-white/20">
-                BM
+                {isShanti ? "SO" : "BM"}
               </div>
               <span className="absolute -bottom-1 -right-1 w-6 h-6 rounded-full bg-emerald-500 border-2 border-[#0a2540] flex items-center justify-center text-white text-xs" title="Verified Scholar">
                 ✓
@@ -71,7 +76,7 @@ export default function StudentDashboard() {
             <div className="space-y-1.5">
               <div className="flex flex-wrap items-center gap-2.5">
                 <h1 className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-                  Birsa Munda
+                  {isShanti ? "Shanti Oraon" : "Birsa Munda"}
                 </h1>
                 <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-400/20 text-amber-300 border border-amber-400/40 backdrop-blur-xs">
                   <BadgeCheck className="w-3.5 h-3.5 text-amber-300" />
@@ -80,12 +85,12 @@ export default function StudentDashboard() {
               </div>
               
               <div className="flex flex-wrap items-center gap-3 text-xs text-slate-300 font-medium">
-                <span>{t('recognizedTribe')}: <strong className="text-white">Santhal</strong></span>
+                <span>{t('recognizedTribe')}: <strong className="text-white">{isShanti ? "Oraon" : "Santhal"}</strong></span>
                 <span>•</span>
-                <span>{t('stateDomicile')}: <strong className="text-white">Jharkhand</strong></span>
+                <span>{t('stateDomicile')}: <strong className="text-white">{isShanti ? "Odisha" : "Jharkhand"}</strong></span>
                 <span>•</span>
                 <span className="font-mono bg-white/10 px-2 py-0.5 rounded text-[11px] text-slate-200">
-                  Aadhaar: XXXX-XXXX-8492
+                  Aadhaar: {isShanti ? "XXXX-XXXX-9921" : "XXXX-XXXX-8492"}
                 </span>
               </div>
             </div>

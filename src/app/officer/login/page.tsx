@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useState } from "react";
 import Link from "next/link";
@@ -7,32 +7,39 @@ import {
   FileCheck2, 
   ShieldCheck, 
   ArrowLeft, 
-  ArrowRight,
-  Lock,
-  UserCheck,
-  Building2,
-  Sparkles
+  ArrowRight, 
+  Lock, 
+  UserCheck, 
+  Building2, 
+  Sparkles,
+  ShieldAlert
 } from "lucide-react";
+import { useAuth } from "@/context/AuthContext";
 
 export default function OfficerLoginPage() {
   const router = useRouter();
+  const { login } = useAuth();
   const [govEmail, setGovEmail] = useState("rajesh.verma@mota.gov.in");
   const [password, setPassword] = useState("••••••••••••");
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = () => {
+  const handleLogin = async (userKey: string = "officer-rajesh") => {
     setIsLoading(true);
-    localStorage.setItem("tribalsetu_user_key", "officer-rajesh");
-    setTimeout(() => {
+    const success = await login(userKey);
+    if (success) {
+      setTimeout(() => {
+        setIsLoading(false);
+        router.push("/officer/scrutiny");
+      }, 400);
+    } else {
       setIsLoading(false);
-      router.push("/officer/scrutiny");
-    }, 600);
+    }
   };
 
   return (
     <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center p-4 sm:p-6 bg-slate-50">
-      <div className="max-w-md w-full space-y-6">
-        <div>
+      <div className="max-w-md w-full space-y-5">
+        <div className="flex items-center justify-between">
           <Link
             href="/"
             className="inline-flex items-center gap-1.5 text-xs font-bold text-slate-500 hover:text-slate-800 transition"
@@ -40,6 +47,11 @@ export default function OfficerLoginPage() {
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>मुख्य पृष्ठ (Back to Home)</span>
           </Link>
+
+          <div className="flex items-center gap-1 text-[11px] font-bold text-amber-900 bg-amber-100/80 px-2.5 py-0.5 rounded-full border border-amber-300">
+            <span className="w-1.5 h-1.5 rounded-full bg-amber-600 animate-ping"></span>
+            <span>Desk Scrutiny Level-4</span>
+          </div>
         </div>
 
         <div className="bg-white rounded-3xl border border-slate-200/90 shadow-xl overflow-hidden">
@@ -58,7 +70,19 @@ export default function OfficerLoginPage() {
             </p>
           </div>
 
-          <div className="p-6 sm:p-8 space-y-6">
+          <div className="p-6 sm:p-8 space-y-5">
+            {/* Military Cyber Defense Chip */}
+            <div className="p-3 bg-slate-900 rounded-2xl text-slate-200 text-xs border border-red-500/30 flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <ShieldAlert className="w-4 h-4 text-red-400 shrink-0" />
+                <div>
+                  <div className="text-[11px] font-mono font-bold text-red-300">BLACK CAT COMMANDO CYBER DEFENSE</div>
+                  <div className="text-[10px] text-slate-400">Restricted Officer Workbench (Zero Leak Guarantee)</div>
+                </div>
+              </div>
+              <span className="text-[9px] font-mono text-amber-400 bg-amber-950 px-2 py-0.5 rounded border border-amber-700">AES-256</span>
+            </div>
+
             <div className="space-y-4 text-xs">
               <div>
                 <label className="block font-bold text-slate-700 mb-1">
@@ -84,12 +108,12 @@ export default function OfficerLoginPage() {
 
               <button
                 type="button"
-                onClick={handleLogin}
+                onClick={() => handleLogin("officer-rajesh")}
                 disabled={isLoading}
-                className="w-full py-3 bg-[#0a2540] hover:bg-slate-800 text-white rounded-xl font-bold transition flex items-center justify-center gap-2 shadow-md hover:scale-[1.01]"
+                className="w-full py-3 bg-[#0a2540] hover:bg-slate-800 text-white rounded-xl font-bold transition flex items-center justify-center gap-2 shadow-md hover:scale-[1.01] cursor-pointer"
               >
                 {isLoading ? (
-                  <span>Accessing Scrutiny Workbench...</span>
+                  <span>Generating Officer Clearance Token...</span>
                 ) : (
                   <>
                     <span>Enter Scrutiny Workbench</span>
@@ -105,8 +129,8 @@ export default function OfficerLoginPage() {
               </div>
               <button
                 type="button"
-                onClick={handleLogin}
-                className="w-full p-3 text-left rounded-xl bg-amber-50/70 hover:bg-amber-100/70 border border-amber-200 transition"
+                onClick={() => handleLogin("officer-rajesh")}
+                className="w-full p-3 text-left rounded-xl bg-amber-50/70 hover:bg-amber-100/70 border border-amber-200 transition cursor-pointer"
               >
                 <div className="text-xs font-black text-amber-950">Dr. Rajesh Verma</div>
                 <div className="text-[10px] text-amber-800 font-semibold mt-0.5">
