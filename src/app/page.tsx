@@ -31,24 +31,24 @@ import { ALL_INDIAN_LANGUAGES } from "@/lib/chatbotKnowledge";
 
 const HERO_SLIDES = [
   {
-    eyebrow: "MINISTRY OF TRIBAL AFFAIRS • GOVERNMENT OF INDIA",
-    title: "TribalSetu 🌉",
-    subtitle: "Empowering Tribal Scholars with Intelligent Digital Governance & Optical AI",
-    desc: "Direct digital fellowship pipeline from Indian tribal districts to top national & global universities.",
+    eyebrowKey: "heroEyebrow",
+    titleKey: "heroTitle",
+    subtitleKey: "heroSubtitle",
+    descKey: "heroDesc",
     bg: "from-[#0a2540] via-[#0d3154] to-[#046a38]",
   },
   {
-    eyebrow: "NATIONAL FELLOWSHIP SCHEME (NFST)",
-    title: "750 Doctoral Fellowships",
-    subtitle: "Regular M.Phil & Ph.D. in Central Universities, IITs & Premier Institutes",
-    desc: "₹38,800/month JRF stipend + contingency grant + direct Aadhaar DBT via PFMS treasury.",
+    eyebrowKey: "slide2Eyebrow",
+    titleKey: "slide2Title",
+    subtitleKey: "slide2Subtitle",
+    descKey: "slide2Desc",
     bg: "from-[#0a2540] via-[#163c66] to-[#0f345c]",
   },
   {
-    eyebrow: "NATIONAL OVERSEAS SCHOLARSHIP (NOS)",
-    title: "Global Education for ST Talent",
-    subtitle: "100% Tuition Fees & Living Allowances in Top 500 QS World Universities",
-    desc: "Oxford, Cambridge, Imperial, MIT and Harvard research programs supported by MoTA.",
+    eyebrowKey: "slide3Eyebrow",
+    titleKey: "slide3Title",
+    subtitleKey: "slide3Subtitle",
+    descKey: "slide3Desc",
     bg: "from-[#06182a] via-[#0f2e5a] to-[#044e2b]",
   },
 ];
@@ -88,19 +88,6 @@ const AGRI_NEWS = [
   },
 ];
 
-const INDIAN_LANGUAGES = [
-  { code: "hi", name: "हिन्दी", sub: "Hindi" },
-  { code: "en", name: "English", sub: "English" },
-  { code: "sat", name: "संथाली", sub: "Santhali (Ol Chiki)" },
-  { code: "gon", name: "गोंडी", sub: "Gondi" },
-  { code: "bn", name: "বাংলা", sub: "Bengali" },
-  { code: "or", name: "ଓଡ଼ିଆ", sub: "Odia" },
-  { code: "mr", name: "मराठी", sub: "Marathi" },
-  { code: "te", name: "తెలుగు", sub: "Telugu" },
-  { code: "gu", name: "ગુજરાતી", sub: "Gujarati" },
-  { code: "as", name: "অসমীয়া", sub: "Assamese" },
-];
-
 export default function HomePage() {
   const { language, setLanguage, t } = useLanguage();
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -137,16 +124,6 @@ export default function HomePage() {
           </div>
         ))}
 
-        {/* Top-Right Circular National Emblem Badge */}
-        <div className="absolute top-5 right-6 z-20 w-18 h-18 sm:w-22 sm:h-22 rounded-full bg-white shadow-2xl border-3 border-amber-400 p-0.5 flex items-center justify-center overflow-hidden ring-4 ring-white/30 transition hover:scale-105">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/logo.png"
-            alt="TribalSetu Official Emblem"
-            className="w-full h-full object-cover rounded-full"
-          />
-        </div>
-
         {/* Carousel Arrow Controls */}
         <button
           onClick={() => setCurrentSlide((currentSlide - 1 + HERO_SLIDES.length) % HERO_SLIDES.length)}
@@ -167,19 +144,19 @@ export default function HomePage() {
         <div className="relative z-10 text-center max-w-4xl mx-auto px-6 py-14 space-y-4 text-white">
           <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-emerald-900/60 border border-emerald-400/40 text-emerald-300 text-xs font-bold shadow-md">
             <Sparkles className="w-3.5 h-3.5 text-emerald-400" />
-            <span>{HERO_SLIDES[currentSlide].eyebrow}</span>
+            <span>{t(HERO_SLIDES[currentSlide].eyebrowKey)}</span>
           </div>
 
           <h1 className="text-4xl sm:text-6xl font-black tracking-tight drop-shadow-md">
-            {HERO_SLIDES[currentSlide].title}
+            {t(HERO_SLIDES[currentSlide].titleKey)}
           </h1>
 
           <p className="text-lg sm:text-xl font-bold text-amber-200 tracking-wide">
-            {HERO_SLIDES[currentSlide].subtitle}
+            {t(HERO_SLIDES[currentSlide].subtitleKey)}
           </p>
 
           <p className="text-xs sm:text-sm text-slate-200 max-w-2xl mx-auto leading-relaxed">
-            {HERO_SLIDES[currentSlide].desc}
+            {t(HERO_SLIDES[currentSlide].descKey)}
           </p>
 
           <div className="pt-3 flex flex-wrap items-center justify-center gap-3">
@@ -187,14 +164,14 @@ export default function HomePage() {
               href="/student/apply"
               className="px-6 py-3 bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-600 hover:to-emerald-700 text-white rounded-xl text-xs font-black shadow-lg shadow-emerald-950/40 transition hover:scale-105 flex items-center gap-2"
             >
-              <span>Apply for Fellowship (आवेदन करें)</span>
+              <span>{t('applyFellowshipBtn')}</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/student/login"
               className="px-6 py-3 bg-white/15 hover:bg-white/25 text-white border border-white/30 rounded-xl text-xs font-black backdrop-blur-md transition"
             >
-              <span>Scholar Login (छात्र लॉगिन)</span>
+              <span>{t('scholarLoginBtn')}</span>
             </Link>
           </div>
         </div>
@@ -223,7 +200,7 @@ export default function HomePage() {
             {t('chooseRoleTitle')}
           </h2>
           <p className="text-xs text-slate-500">
-            Dedicated role-based portals for students, scrutiny officers, and ministry administrators
+            {t('chooseRoleDesc')}
           </p>
         </div>
 
@@ -243,7 +220,7 @@ export default function HomePage() {
                   {t('roleStudentTitle')}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  छात्रवृत्ति आवेदन, लाइव स्टेटस ट्रैकर, ओसीआर दस्तावेज अपलोड व त्रुटि निवारण।
+                  {t('roleStudentDesc')}
                 </p>
               </div>
             </div>
@@ -267,7 +244,7 @@ export default function HomePage() {
                   {t('roleOfficerTitle')}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  डिजिटल प्रमाण-पत्र सत्यापन, एआई बाउंडिंग बॉक्स क्रॉस-चेक एवं आपत्ति निवारण।
+                  {t('roleOfficerDesc')}
                 </p>
               </div>
             </div>
@@ -291,7 +268,7 @@ export default function HomePage() {
                   {t('roleAdminTitle')}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  राष्ट्रीय वित्तीय विश्लेषण, डायनामिक नियम विन्यास, मेरिट स्कोरिंग एवं राजपत्र।
+                  {t('roleAdminDesc')}
                 </p>
               </div>
             </div>
@@ -312,15 +289,15 @@ export default function HomePage() {
               </div>
               <div>
                 <h3 className="text-base font-extrabold text-slate-900 group-hover:text-blue-700 transition-colors">
-                  संस्थान सत्यापन (Registrar)
+                  {t('roleInstTitle')}
                 </h3>
                 <p className="text-xs text-slate-500 mt-1 leading-relaxed">
-                  विश्वविद्यालय प्रवेश पत्र सत्यापन, NIRF/QS रैंकिंग प्रमाणीकरण व शोध प्रस्ताव जांच।
+                  {t('roleInstDesc')}
                 </p>
               </div>
             </div>
             <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-xs font-bold text-blue-700">
-              <span>Start Application</span>
+              <span>{t('startApplicationBtn')}</span>
               <span className="text-lg group-hover:translate-x-1 transition-transform">›</span>
             </div>
           </Link>
@@ -332,7 +309,7 @@ export default function HomePage() {
         <div className="bg-white rounded-3xl border-l-6 border-emerald-600 border border-slate-200/80 p-6 sm:p-8 shadow-md">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
             <h2 className="text-xl sm:text-2xl font-black text-[#0a2540]">
-              पारंपरिक छात्रवृत्ति सत्यापन की चुनौतियां एवं डिजिटल समाधान (The Problem & AI Solution)
+              {t('problemSolutionTitle')}
             </h2>
             <span className="text-xs font-bold text-emerald-800 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-300">
               Digital India MoTA Initiative
@@ -341,18 +318,18 @@ export default function HomePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-slate-700 leading-relaxed">
             <div className="space-y-2 p-4 bg-slate-50 rounded-2xl border border-slate-200">
               <span className="font-black text-red-700 uppercase tracking-wide text-[11px] block">
-                ❌ पूर्व प्रणाली में चुनौतियां (Legacy Bottlenecks):
+                ❌ {t('legacyProblemTitle')}:
               </span>
               <p>
-                दूरदराज के जनजातीय क्षेत्रों (जैसे झारखंड, ओडिशा, मध्य प्रदेश, पूर्वोत्तर) के छात्रों को आय और जाति प्रमाण पत्र भौतिक रूप से डाक द्वारा भेजने पड़ते थे। सत्यापन में 6 से 9 माह का समय लगता था और छोटी सी अस्पष्टता पर संपूर्ण आवेदन निरस्त हो जाता था।
+                {t('legacyProblemDesc')}
               </p>
             </div>
             <div className="space-y-2 p-4 bg-emerald-50 rounded-2xl border border-emerald-200">
               <span className="font-black text-emerald-800 uppercase tracking-wide text-[11px] block">
-                ✓ जनजातीय सेतु समाधान (The TribalSetu AI Advantage):
+                ✓ {t('aiSolutionTitle')}:
               </span>
               <p>
-                ऑप्टिकल एआई इंजन (Optical OCR) 5 सेकंड में डिजिटल मुहर, जारी करने की तिथि व आय सीमा की जांच करता है। किसी भी कमी पर छात्र को तत्काल पोर्टल पर आपत्ति दिखाई देती है तथा केवल संबंधित दस्तावेज को पुनः अपलोड करके संवीक्षा जारी रखी जा सकती है।
+                {t('aiSolutionDesc')}
               </p>
             </div>
           </div>
@@ -364,15 +341,15 @@ export default function HomePage() {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <span className="text-xs font-bold text-emerald-700 uppercase tracking-wider">
-              📰 आधिकारिक अधिसूचनाएं व समाचार (MoTA News Feed)
+              📰 {t('newsFeedCategory')}
             </span>
             <h2 className="text-xl sm:text-2xl font-black text-slate-900 mt-0.5">
-              Latest Fellowship Announcements & Circulars
+              {t('newsFeedTitle')}
             </h2>
           </div>
           <div className="flex items-center gap-1.5 text-xs bg-emerald-100/80 text-emerald-900 px-3 py-1 rounded-full font-bold border border-emerald-300">
             <span className="w-2 h-2 rounded-full bg-emerald-600 animate-ping"></span>
-            <span>Live Circular Feed</span>
+            <span>{t('liveCircularFeed')}</span>
           </div>
         </div>
 
@@ -421,7 +398,7 @@ export default function HomePage() {
               <div className="pt-2 border-t border-slate-100 text-[11px] text-slate-400 flex items-center justify-between">
                 <span>{news.source}</span>
                 <span className="font-bold text-[#0a2540] hover:underline cursor-pointer">
-                  Read Gazette Circular →
+                  {t('readGazetteCircular')}
                 </span>
               </div>
             </div>
@@ -434,33 +411,33 @@ export default function HomePage() {
         <div className="bg-gradient-to-r from-[#0a2540] via-[#0e3b66] to-[#046a38] text-white rounded-3xl p-8 shadow-xl">
           <div className="text-center max-w-2xl mx-auto space-y-1 mb-8">
             <span className="text-xs font-bold text-amber-300 uppercase tracking-widest">
-              National Portal Metrics
+              {t('portalMetricsEyebrow')}
             </span>
             <h2 className="text-2xl sm:text-3xl font-black">
-              MoTA Higher Education Fellowship Ledger (FY 2026-27)
+              {t('portalMetricsTitle')}
             </h2>
           </div>
 
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
             <div className="space-y-1">
               <div className="text-3xl sm:text-4xl font-black text-amber-300">880+</div>
-              <div className="text-xs font-bold text-slate-300 uppercase">Total Applications</div>
-              <div className="text-[11px] text-emerald-300 font-semibold">Across 22 Tribal States</div>
+              <div className="text-xs font-bold text-slate-300 uppercase">{t('statTotalApps')}</div>
+              <div className="text-[11px] text-emerald-300 font-semibold">{t('statTotalAppsSub')}</div>
             </div>
             <div className="space-y-1">
               <div className="text-3xl sm:text-4xl font-black text-emerald-400">₹48.6 Cr</div>
-              <div className="text-xs font-bold text-slate-300 uppercase">Sanctioned Disbursals</div>
-              <div className="text-[11px] text-slate-300">Direct DBT via Aadhaar / PFMS</div>
+              <div className="text-xs font-bold text-slate-300 uppercase">{t('statDisbursals')}</div>
+              <div className="text-[11px] text-slate-300">{t('statDisbursalsSub')}</div>
             </div>
             <div className="space-y-1">
               <div className="text-3xl sm:text-4xl font-black text-blue-300">850</div>
-              <div className="text-xs font-bold text-slate-300 uppercase">Annual Scheme Slots</div>
-              <div className="text-[11px] text-slate-300">750 NFST + 100 NOS</div>
+              <div className="text-xs font-bold text-slate-300 uppercase">{t('statAnnualSlots')}</div>
+              <div className="text-[11px] text-slate-300">{t('statAnnualSlotsSub')}</div>
             </div>
             <div className="space-y-1">
               <div className="text-3xl sm:text-4xl font-black text-purple-300">98.2%</div>
-              <div className="text-xs font-bold text-slate-300 uppercase">OCR Accuracy Rate</div>
-              <div className="text-[11px] text-slate-300">Zero Manual Transcription</div>
+              <div className="text-xs font-bold text-slate-300 uppercase">{t('statOcrAccuracy')}</div>
+              <div className="text-[11px] text-slate-300">{t('statOcrAccuracySub')}</div>
             </div>
           </div>
         </div>

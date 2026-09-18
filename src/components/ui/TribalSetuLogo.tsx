@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { useLanguage } from "@/context/LanguageContext";
 
 interface LogoProps {
   size?: "sm" | "md" | "lg" | "xl";
@@ -13,6 +14,7 @@ export default function TribalSetuLogo({
   showText = true,
   textColor = "dark"
 }: LogoProps) {
+  const { language, t } = useLanguage();
   const sizeMap = {
     sm: { icon: 38, text: "text-base", sub: "text-[10px]" },
     md: { icon: 50, text: "text-xl", sub: "text-[11px]" },
@@ -50,7 +52,7 @@ export default function TribalSetuLogo({
           <span className={`font-bold tracking-wider uppercase mt-1 ${dim.sub} ${
             textColor === "light" ? "text-amber-200" : "text-amber-800"
           }`}>
-            जनजातीय कार्य मंत्रालय • MoTA
+            {language.code === "en" ? "Ministry of Tribal Affairs • GOI" : `${t('motaName')} • MoTA`}
           </span>
         </div>
       )}
