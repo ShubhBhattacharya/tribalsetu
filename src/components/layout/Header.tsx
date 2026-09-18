@@ -22,7 +22,8 @@ import {
   LogOut,
   BookOpen,
   ShieldAlert,
-  Clock
+  Clock,
+  Smartphone
 } from "lucide-react";
 import { MOCK_USERS, DEFAULT_USER, getRoleHomeRoute } from "@/lib/auth";
 import { UserProfile, UserRole } from "@/types";
@@ -107,6 +108,26 @@ export default function Header() {
         </div>
 
         <div className="flex items-center space-x-2.5 flex-wrap">
+          {/* Interactive Workflow Hub Simulator */}
+          <Link
+            href="/workflow"
+            className="flex items-center gap-1 bg-gradient-to-r from-emerald-900 to-slate-800 hover:from-emerald-800 hover:to-slate-700 text-emerald-300 px-2.5 py-1 rounded-md text-[11px] font-bold border border-emerald-500/40 transition shadow-2xs"
+            title="Live 5-Stage Scholarship Workflow Simulation"
+          >
+            <Sparkles className="w-3 h-3 text-emerald-400" />
+            <span>⚡ {t('navWorkflowHub')}</span>
+          </Link>
+
+          {/* Dedicated Mobile App Version */}
+          <Link
+            href="/mobile"
+            className="flex items-center gap-1 bg-slate-800 hover:bg-slate-700 text-amber-300 px-2.5 py-1 rounded-md text-[11px] font-bold border border-slate-600 transition shadow-2xs"
+            title="Launch TribalSetu Mobile App"
+          >
+            <Smartphone className="w-3 h-3 text-amber-400" />
+            <span>📱 {t('navMobileApp')}</span>
+          </Link>
+
           {/* Interactive Portal Guide Button */}
           <button
             type="button"

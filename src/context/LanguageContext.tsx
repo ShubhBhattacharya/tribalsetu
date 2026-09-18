@@ -553,6 +553,30 @@ export const TRANSLATIONS: TranslationDictionary = {
     or: 'ମାର୍ଗଦର୍ଶିକା (Guide)',
     pa: 'ਗਾਈਡ (Guide)'
   },
+  navMobileApp: {
+    hi: 'मोबाइल ऐप',
+    en: 'Mobile App',
+    bn: 'মোবাইল অ্যাপ',
+    te: 'మొబైల్ యాప్',
+    mr: 'मोबाइल अॅप',
+    ta: 'மொபைல் ஆப்',
+    gu: 'મોબાઇલ એપ',
+    sat: 'ᱢᱚᱵᱟᱭᱤᱞ ᱮᱯ',
+    or: 'ମୋବାଇଲ୍ ଆପ୍',
+    pa: 'ਮੋਬਾਈਲ ਐਪ'
+  },
+  navWorkflowHub: {
+    hi: 'लाइव वर्कफ़्लो',
+    en: 'Live Workflow',
+    bn: 'লাইভ ওয়ার্কফ্লো',
+    te: 'లైవ్ వర్క్‌ఫ్లో',
+    mr: 'थेट वर्कफ्लो',
+    ta: 'நேரலை பணிப்பாய்வு',
+    gu: 'લાઇવ વર્કફ્લો',
+    sat: 'ᱞᱟᱭᱤᱵᱽ ᱠᱟᱹᱢᱤᱦᱚᱨᱟ',
+    or: 'ଲାଇଭ୍ ୱାର୍କଫ୍ଲୋ',
+    pa: 'ਲਾਈਵ ਵਰਕਫਲੋ'
+  },
   heroEyebrow: {
     hi: 'जनजातीय कार्य मंत्रालय • भारत सरकार',
     en: 'Ministry of Tribal Affairs • Government of India',

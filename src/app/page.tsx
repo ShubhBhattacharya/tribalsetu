@@ -24,7 +24,9 @@ import {
   Landmark,
   BadgeAlert,
   HelpCircle,
-  ExternalLink
+  ExternalLink,
+  Smartphone,
+  Zap
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
 import { ALL_INDIAN_LANGUAGES } from "@/lib/chatbotKnowledge";
@@ -301,6 +303,85 @@ export default function HomePage() {
               <span className="text-lg group-hover:translate-x-1 transition-transform">›</span>
             </div>
           </Link>
+        </div>
+      </section>
+
+      {/* ================= 2.5 INNOVATION SHOWCASE: MOBILE APP & WORKFLOW SIMULATOR ================= */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+          {/* Card 1: Dedicated Mobile App Experience */}
+          <div className="bg-gradient-to-br from-[#0a2540] via-[#0e3b66] to-[#044e2b] text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden flex flex-col justify-between space-y-6">
+            <div className="space-y-3 relative z-10">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 border border-emerald-400/40 text-emerald-300 text-xs font-bold">
+                <Smartphone className="w-3.5 h-3.5" />
+                <span>Android & iOS Native Experience</span>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-black tracking-tight leading-tight">
+                TribalSetu Mobile App (मोबाइल ऐप)
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-200 leading-relaxed max-w-md">
+                Designed specifically for remote tribal scholars with mobile camera OCR scanning, offline application sync for patchy connectivity, and instant Aadhaar DBT push alerts.
+              </p>
+
+              <div className="flex flex-wrap gap-2 pt-1 text-[11px]">
+                <span className="px-2.5 py-1 bg-white/10 rounded-lg font-bold backdrop-blur-xs">📸 Camera Scanner</span>
+                <span className="px-2.5 py-1 bg-white/10 rounded-lg font-bold backdrop-blur-xs">📶 Offline Sync</span>
+                <span className="px-2.5 py-1 bg-white/10 rounded-lg font-bold backdrop-blur-xs">💰 DBT Passbook</span>
+              </div>
+            </div>
+
+            <div className="pt-2 relative z-10 flex items-center justify-between">
+              <Link
+                href="/mobile"
+                className="px-5 py-3 bg-gradient-to-r from-amber-400 to-amber-500 hover:from-amber-500 hover:to-amber-600 text-slate-950 font-black text-xs rounded-xl shadow-lg transition hover:scale-105 flex items-center gap-2"
+              >
+                <span>Launch Mobile App (ऐप खोलें)</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <span className="text-[11px] text-amber-200 font-bold hidden sm:inline">
+                Zero App Download Required
+              </span>
+            </div>
+
+            <div className="absolute -right-12 -bottom-12 w-48 h-48 bg-emerald-500/20 rounded-full blur-2xl pointer-events-none"></div>
+          </div>
+
+          {/* Card 2: Interactive 5-Stage Workflow Simulator */}
+          <div className="bg-gradient-to-br from-white to-slate-50 border-2 border-slate-200/90 rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden flex flex-col justify-between space-y-6">
+            <div className="space-y-3 relative z-10">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-50 border border-emerald-300 text-emerald-800 text-xs font-bold">
+                <Zap className="w-3.5 h-3.5 text-emerald-600" />
+                <span>End-to-End Governance Engine</span>
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-black text-slate-900 tracking-tight leading-tight">
+                Live 5-Stage Workflow Simulator
+              </h3>
+              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed max-w-md">
+                Experience the live lifecycle of a fellowship application: Laser OCR scan, 12-month rule deficiency clearance, side-by-side officer desk scrutiny, and direct ₹38,800 DBT bank credit.
+              </p>
+
+              <div className="flex flex-wrap gap-2 pt-1 text-[11px] text-slate-700">
+                <span className="px-2.5 py-1 bg-slate-100 rounded-lg font-bold border border-slate-200">⚡ 5-Sec AI Scan</span>
+                <span className="px-2.5 py-1 bg-slate-100 rounded-lg font-bold border border-slate-200">🛡️ Zero Rejection</span>
+                <span className="px-2.5 py-1 bg-slate-100 rounded-lg font-bold border border-slate-200">🏛️ Gazette Order</span>
+              </div>
+            </div>
+
+            <div className="pt-2 relative z-10 flex items-center justify-between">
+              <Link
+                href="/workflow"
+                className="px-5 py-3 bg-[#0a2540] hover:bg-[#123960] text-white font-black text-xs rounded-xl shadow-lg transition hover:scale-105 flex items-center gap-2"
+              >
+                <span>Run Interactive Simulator (लाइव वर्कफ़्लो)</span>
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+              <span className="text-[11px] text-emerald-700 font-bold hidden sm:inline">
+                Interactive Test Bench
+              </span>
+            </div>
+
+            <div className="absolute -right-12 -bottom-12 w-48 h-48 bg-blue-500/10 rounded-full blur-2xl pointer-events-none"></div>
+          </div>
         </div>
       </section>
 
