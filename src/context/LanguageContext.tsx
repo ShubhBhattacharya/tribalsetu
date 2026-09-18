@@ -1,7 +1,7 @@
 'use client';
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { ALL_INDIAN_LANGUAGES, SupportedLanguage } from '@/lib/chatbotKnowledge';
+import { ALL_INDIAN_LANGUAGES, SupportedLanguage } from '@/lib/languages';
 
 export type LanguageCode = string;
 

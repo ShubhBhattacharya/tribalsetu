@@ -15,7 +15,7 @@ import {
 import TribalSetuLogo from "@/components/ui/TribalSetuLogo";
 import { useAuth } from "@/context/AuthContext";
 import { useLanguage } from "@/context/LanguageContext";
-import { ALL_INDIAN_LANGUAGES } from "@/lib/chatbotKnowledge";
+import { ALL_INDIAN_LANGUAGES } from "@/lib/languages";
 
 type RoleTab = "STUDENT" | "MOTA_OFFICER" | "ADMIN";
 

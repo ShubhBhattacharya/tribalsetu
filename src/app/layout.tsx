@@ -1,11 +1,17 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import Header from "@/components/layout/Header";
-import TribalMitraBot from "@/components/chatbot/TribalMitraBot";
-import InteractiveTourGuide from "@/components/guide/InteractiveTourGuide";
 import { LanguageProvider } from "@/context/LanguageContext";
 import { AuthProvider } from "@/context/AuthContext";
 import TribalSetuLogo from "@/components/ui/TribalSetuLogo";
 import "./globals.css";
+
+const TribalMitraBot = dynamic(() => import("@/components/chatbot/TribalMitraBot"), {
+  ssr: false,
+});
+const InteractiveTourGuide = dynamic(() => import("@/components/guide/InteractiveTourGuide"), {
+  ssr: false,
+});
 
 export const metadata: Metadata = {
   title: "TribalSetu | MoTA AI-Enabled Scholarship & Fellowship Portal",

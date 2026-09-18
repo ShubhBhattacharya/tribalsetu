@@ -29,7 +29,7 @@ import { MOCK_USERS, DEFAULT_USER, getRoleHomeRoute } from "@/lib/auth";
 import { UserProfile, UserRole } from "@/types";
 import { useLanguage } from "@/context/LanguageContext";
 import { useAuth } from "@/context/AuthContext";
-import { ALL_INDIAN_LANGUAGES } from "@/lib/chatbotKnowledge";
+import { ALL_INDIAN_LANGUAGES } from "@/lib/languages";
 import TribalSetuLogo from "@/components/ui/TribalSetuLogo";
 
 export default function Header() {

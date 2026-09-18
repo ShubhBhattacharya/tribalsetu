@@ -29,7 +29,7 @@ import {
   Zap
 } from "lucide-react";
 import { useLanguage } from "@/context/LanguageContext";
-import { ALL_INDIAN_LANGUAGES } from "@/lib/chatbotKnowledge";
+import { ALL_INDIAN_LANGUAGES } from "@/lib/languages";
 
 const HERO_SLIDES = [
   {
