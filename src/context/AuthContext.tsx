@@ -74,21 +74,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Inactivity countdown ticker
+  // Inactivity timeout handler - lightweight, zero continuous re-renders
   useEffect(() => {
     if (!session) return;
 
+    // Check expiration every 30 seconds instead of 1000ms to eliminate CPU thrashing and fan noise
     const timer = setInterval(() => {
-      setSessionRemaining((prev) => {
-        if (prev <= 1) {
+      const storedLoginTime = localStorage.getItem('tribalsetu_login_time');
+      if (storedLoginTime) {
+        const elapsed = Math.floor((Date.now() - parseInt(storedLoginTime, 10)) / 1000);
+        if (elapsed >= SESSION_DURATION) {
           clearInterval(timer);
           logout();
           alert('सुरक्षा चेतावनी: 15 मिनट की निष्क्रियता के कारण आपका सत्र समाप्त कर दिया गया है। (Session Timed Out for Security)');
-          return 0;
         }
-        return prev - 1;
-      });
-    }, 1000);
+      }
+    }, 30000);
 
     return () => clearInterval(timer);
   }, [session]);

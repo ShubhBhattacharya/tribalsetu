@@ -40,7 +40,6 @@ export default function Header() {
     session, 
     isAuthenticated, 
     currentUser: authUser, 
-    sessionRemaining, 
     login, 
     logout, 
     setShowTour 
@@ -80,12 +79,6 @@ export default function Header() {
     if (next === -1) htmlEl.style.fontSize = "14px";
     else if (next === 1) htmlEl.style.fontSize = "18px";
     else htmlEl.style.fontSize = "16px";
-  };
-
-  const formatTime = (seconds: number) => {
-    const mins = Math.floor(seconds / 60);
-    const secs = seconds % 60;
-    return `${mins}:${secs.toString().padStart(2, "0")}`;
   };
 
   return (
