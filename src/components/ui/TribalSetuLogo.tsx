@@ -14,10 +14,10 @@ export default function TribalSetuLogo({
   textColor = "dark"
 }: LogoProps) {
   const sizeMap = {
-    sm: { icon: 32, text: "text-base", sub: "text-[9px]" },
-    md: { icon: 42, text: "text-xl", sub: "text-[10px]" },
-    lg: { icon: 56, text: "text-2xl", sub: "text-xs" },
-    xl: { icon: 72, text: "text-3xl", sub: "text-sm" },
+    sm: { icon: 38, text: "text-base", sub: "text-[10px]" },
+    md: { icon: 50, text: "text-xl", sub: "text-[11px]" },
+    lg: { icon: 68, text: "text-2xl", sub: "text-xs" },
+    xl: { icon: 92, text: "text-3xl", sub: "text-sm" },
   };
 
   const dim = sizeMap[size] || sizeMap.md;

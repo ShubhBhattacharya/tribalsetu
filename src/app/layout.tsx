@@ -10,6 +10,11 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "TribalSetu | MoTA AI-Enabled Scholarship & Fellowship Portal",
   description: "Unified AI-Enabled Scholarship & Fellowship Management System for the Ministry of Tribal Affairs (MoTA), Government of India.",
+  icons: {
+    icon: "/logo.png",
+    shortcut: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
@@ -19,6 +24,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/logo.png" />
+      </head>
       <body className="min-h-screen flex flex-col bg-slate-50 text-slate-900 selection:bg-emerald-200 selection:text-emerald-900">
         <LanguageProvider>
           <AuthProvider>
